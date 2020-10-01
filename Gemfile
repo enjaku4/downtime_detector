@@ -13,6 +13,8 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'slim-rails'
 gem 'sidekiq'
 gem 'sidekiq-scheduler'
+gem 'jquery-rails'
+gem 'bootstrap', '~> 4.4.1'
 
 group :development, :test do
   gem 'byebug'
