@@ -25,3 +25,10 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'annotate'
 end
+
+group :test do
+  gem 'rspec-rails', '~> 3.9'
+  gem 'factory_bot_rails'
+  gem 'database_cleaner-active_record'
+  gem 'spring-commands-rspec'
+end
