@@ -15,6 +15,8 @@ gem 'sidekiq'
 gem 'sidekiq-scheduler'
 gem 'jquery-rails'
 gem 'bootstrap', '~> 4.4.1'
+gem 'active_interaction', '~> 3.8'
+gem 'bcrypt'
 
 group :development, :test do
   gem 'byebug'
@@ -33,4 +35,5 @@ group :test do
   gem 'factory_bot_rails'
   gem 'database_cleaner-active_record'
   gem 'spring-commands-rspec'
+  gem 'rails-controller-testing'
 end

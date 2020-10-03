@@ -11,4 +11,19 @@ html
     = javascript_include_tag 'application', data_turbolinks_track: 'reload'
 
   body
-    = yield
+    nav.navbar.navbar-dark.bg-dark
+      = link_to 'Downtime Detector', root_path, class: 'navbar-brand'
+
+      - if current_user
+        .navbar-text.py-0.d-flex.align-items-center
+          b.mr-3 = current_user.nickname
+          = link_to 'sign out', session_path, method: :delete, class: 'btn btn-sm btn-danger'
+
+    .container.mt-5
+
+      = yield
+
+      footer.mt-5.row: .col.text-center
+        p
+          ' &copy; #{Time.current.year}
+          = link_to 'enjaku4', 'https://github.com/enjaku4', target: '_blank'
