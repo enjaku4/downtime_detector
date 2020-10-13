@@ -5,7 +5,7 @@
 
 .row
   .col-12.col-md-6.offset-md-3.text-center
-    = form_with url: session_path do |f|
+    = form_with url: session_path, local: true do |f|
       = render partial: 'shared/flash_messages', locals: { flash: flash }
       .form-group
         = f.text_field :nickname, placeholder: 'Nickname', class: 'form-control'
