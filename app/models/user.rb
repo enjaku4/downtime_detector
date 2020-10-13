@@ -14,4 +14,5 @@
 #  index_users_on_nickname  (nickname) UNIQUE
 #
 class User < ApplicationRecord
+  has_and_belongs_to_many :web_addresses
 end

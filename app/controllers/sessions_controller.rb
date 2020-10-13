@@ -6,18 +6,15 @@ class SessionsController < ApplicationController
 
     if outcome.valid?
       sign_in(outcome.result)
-      flash[:success] = 'signed in'
+      redirect_to web_addresses_path
     else
       flash[:danger] = outcome.errors.full_messages.to_sentence
+      redirect_to root_path
     end
-
-    redirect_to root_path
   end
 
   def destroy
-    flash[:success] = 'signed out'
     sign_out
-
     redirect_to root_path
   end
 end

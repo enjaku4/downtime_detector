@@ -1,0 +1,27 @@
+.row
+  .col.text-center
+    h2.mb-4 Web Addresses
+
+    - if @web_addresses.any?
+      .table-responsive.mb-3
+        table.table.table-dark.table-striped.table-bordered.table-sm
+          thead
+            tr
+              th URL
+              th pinged at
+              th HTTP status code
+              th status
+              th
+          tbody
+            - @web_addresses.each do |web_address|
+              tr
+                td = web_address.url
+                td = web_address.pinged_at
+                td = web_address.http_status_code
+                td = web_address.status
+                td = link_to 'delete', web_address_path(web_address), class: 'text-danger', method: :delete, data: { confirm: 'Are you sure?' }
+
+    - else
+      p You have no web addresses added.
+
+    = link_to 'Add web address', new_web_address_path, class: 'btn btn-primary'
