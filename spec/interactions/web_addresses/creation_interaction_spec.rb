@@ -34,7 +34,7 @@ describe WebAddresses::CreationInteraction do
             expect { subject }.not_to change { WebAddress.where(url: url, status: :unknown).count }.from(1)
           end
 
-          it 'does nothing with the links between the web address and the user' do
+          it 'does nothing with the existing link between the web address and the user' do
             expect { subject }.not_to change { user.web_addresses.exists?(web_address.id) }.from(true)
           end
         end
