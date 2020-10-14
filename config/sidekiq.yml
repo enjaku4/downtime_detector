@@ -1,0 +1,7 @@
+:max_retries: 0
+
+production:
+  :schedule:
+    ping_delegation_job:
+      every: 5m
+      class: WebAddresses::PingDelegationJob
