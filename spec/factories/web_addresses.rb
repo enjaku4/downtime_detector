@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :web_address do
-    url { 'https://google.com' }
+    sequence(:url) { |n| "https://url#{n}.com" }
     status { :unknown }
   end
 end

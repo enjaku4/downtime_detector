@@ -1,0 +1,8 @@
+:max_retries: 0
+
+# TODO production
+development:
+  :schedule:
+    ping_delegation_job:
+      every: 5m
+      class: WebAddresses::PingDelegationJob
