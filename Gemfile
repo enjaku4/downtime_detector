@@ -17,6 +17,7 @@ gem 'jquery-rails'
 gem 'bootstrap', '~> 4.4.1'
 gem 'active_interaction', '~> 3.8'
 gem 'bcrypt'
+gem 'faraday'
 
 group :development, :test do
   gem 'byebug'
