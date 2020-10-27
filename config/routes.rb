@@ -6,6 +6,11 @@ Rails.application.routes.draw do
   root to: 'pages#home'
 
   resource :session, only: [:create, :destroy]
-
   resources :web_addresses, only: [:index, :new, :create, :destroy]
+  resources :users, only: [] do
+    collection do
+      patch :update_email
+      patch :delete_email
+    end
+  end
 end
