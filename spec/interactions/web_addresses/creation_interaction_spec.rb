@@ -19,6 +19,18 @@ describe WebAddresses::CreationInteraction do
     end
 
     context 'if the url is not blank' do
+      context 'if the url is not actually a url' do
+        let(:url) { 'foo' }
+
+        it 'is invalid' do
+          expect(subject).to be_invalid
+        end
+
+        it 'has the url invalid error' do
+          expect(subject.errors.details[:url]).to include({ error: :invalid, value: 'foo' })
+        end
+      end
+
       context 'if a web address with such a url exists' do
         let(:web_address) { create(:web_address) }
         let(:url) { web_address.url }
