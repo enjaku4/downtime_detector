@@ -16,4 +16,6 @@
 #
 class User < ApplicationRecord
   has_and_belongs_to_many :web_addresses
+
+  scope :with_email, -> { where.not(email: nil) }
 end

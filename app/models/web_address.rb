@@ -2,13 +2,14 @@
 #
 # Table name: web_addresses
 #
-#  id               :bigint           not null, primary key
-#  http_status_code :integer
-#  pinged_at        :datetime
-#  status           :integer          not null
-#  url              :string           not null
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  id                :bigint           not null, primary key
+#  http_status_code  :integer
+#  notification_sent :boolean          default(FALSE), not null
+#  pinged_at         :datetime
+#  status            :integer          not null
+#  url               :string           not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #
 # Indexes
 #
@@ -23,18 +24,35 @@ class WebAddress < ApplicationRecord
 
   def set_ping_result!(http_status_code)
     self.http_status_code = http_status_code
-    self.status = resolve_status
-    update!(pinged_at: DateTime.current)
+    update_status!
   end
 
   def mark_as_faulty!
-    self.status = :error
-    update!(pinged_at: DateTime.current)
+    update_status!(:error)
   end
 
   private
 
+    def update_status!(status = nil)
+      self.status = status || resolve_status
+      update!(pinged_at: DateTime.current)
+      post_set_status
+    end
+
     def resolve_status
       http_status_code.in?(200...400) ? :up : :down
+    end
+
+    def post_set_status
+      update!(notification_sent: false) if up?
+
+      if eligible_for_sending_notification?
+        WebAddresses::UsersNotificationJob.perform_later(id)
+        update!(notification_sent: true)
+      end
+    end
+
+    def eligible_for_sending_notification?
+      (down? || error?) && !notification_sent?
     end
 end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe WebAddress, type: :model do
+describe WebAddress, type: :model do
   describe '.ready_to_ping' do
     let!(:web_address_1) { create(:web_address, pinged_at: 24.minutes.ago) }
     let!(:web_address_2) { create(:web_address, pinged_at: nil) }
@@ -38,6 +38,26 @@ RSpec.describe WebAddress, type: :model do
       it 'sets the pinging time' do
         expect { subject }.to change { web_address.pinged_at }.to(date_time)
       end
+
+      it 'notifies the users' do
+        expect { subject }.to enqueue_job(WebAddresses::UsersNotificationJob).with(web_address.id)
+      end
+
+      it 'sets the notification sent flag to true' do
+        expect { subject }.to change { web_address.notification_sent }.to(true)
+      end
+
+      context 'if the notification sent flag was set to true' do
+        before { web_address.notification_sent = true }
+
+        it 'does not change the flag' do
+          expect { subject }.not_to change { web_address.notification_sent }.from(true)
+        end
+
+        it 'does not notify the users' do
+          expect { subject }.not_to enqueue_job(WebAddresses::UsersNotificationJob)
+        end
+      end
     end
 
     context 'if the http status code is between 2xx and 4xx' do
@@ -53,6 +73,22 @@ RSpec.describe WebAddress, type: :model do
 
       it 'sets the pinging time' do
         expect { subject }.to change { web_address.pinged_at }.to(date_time)
+      end
+
+      it 'does not notify the users' do
+        expect { subject }.not_to enqueue_job(WebAddresses::UsersNotificationJob)
+      end
+
+      it 'does not set the notification sent flag to true' do
+        expect { subject }.not_to change { web_address.notification_sent }.from(false)
+      end
+
+      context 'if the notification sent flag was set to true' do
+        before { web_address.notification_sent = true }
+
+        it 'sets the notification sent flag to false' do
+          expect { subject }.to change { web_address.notification_sent }.to(false)
+        end
       end
     end
   end
@@ -71,6 +107,26 @@ RSpec.describe WebAddress, type: :model do
 
     it 'sets the pinging time' do
       expect { subject }.to change { web_address.pinged_at }.to(date_time)
+    end
+
+    it 'notifies the users' do
+      expect { subject }.to enqueue_job(WebAddresses::UsersNotificationJob).with(web_address.id)
+    end
+
+    it 'sets the notification sent flag to true' do
+      expect { subject }.to change { web_address.notification_sent }.to(true)
+    end
+
+    context 'if the notification sent flag was set to true' do
+      before { web_address.notification_sent = true }
+
+      it 'does not change the flag' do
+        expect { subject }.not_to change { web_address.notification_sent }.from(true)
+      end
+
+      it 'does not notify the users' do
+        expect { subject }.not_to enqueue_job(WebAddresses::UsersNotificationJob)
+      end
     end
   end
 end
