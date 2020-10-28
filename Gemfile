@@ -18,6 +18,7 @@ gem 'bootstrap', '~> 4.4.1'
 gem 'active_interaction', '~> 3.8'
 gem 'bcrypt'
 gem 'faraday'
+gem 'recaptcha'
 
 group :development, :test do
   gem 'byebug'
