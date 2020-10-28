@@ -37,12 +37,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
 
-      - name: bundle
-        run: |
-          sudo apt-get -yqq install libpq-dev
-          bundle
+      - name: install dependencies
+        run: sudo apt-get -yqq install libpq-dev
 
-      # - name: test
-      #   run: |
-      #     bin/rails db:test:prepare
-      #     bin/rails rspec
+      - name: bundle
+        run: bundle
+
+      - name: test
+        run: |
+          bin/rails db:test:prepare
+          bin/rails rspec
