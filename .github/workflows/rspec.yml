@@ -13,7 +13,6 @@ jobs:
     env:
       RAILS_ENV: test
       DATABASE_HOST: localhost
-      BUNDLE_PATH: /bundle/vendor
 
     services:
       db:
@@ -31,6 +30,8 @@ jobs:
         with:
           ruby-version: 2.6.6
 
+      - run: bundle config --local path vendor/bundle
+
       - uses: actions/cache@v2
         with:
           path: vendor/bundle
@@ -38,13 +39,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
 
-      - name: install dependencies
-        run: sudo apt-get -yqq install libpq-dev
-
-      - name: bundle
-        run: bundle
-
-      - name: test
-        run: |
+      - run: sudo apt-get -yqq install libpq-dev
+      - run: bundle
+      - run: |
           bin/rails db:test:prepare
-          bin/rspec
+          bin/rspec --format RSpec::Github::Formatter
