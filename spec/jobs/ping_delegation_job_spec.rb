@@ -13,7 +13,7 @@ describe WebAddresses::PingDelegationJob, type: :job do
   end
 
   it 'enqueues a ping job for web_address_1' do
-    expect { subject }.to enqueue_job(WebAddresses::PingJob).once.with(666)
+    expect { subject }.to enqueue_job(WebAddresses::PingJob).once.with(web_address_1.id)
   end
 
   it 'enqueues a ping job for web_address_2' do

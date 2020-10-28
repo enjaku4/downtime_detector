@@ -30,17 +30,15 @@ jobs:
         with:
           ruby-version: 2.6.6
 
+      - run: sudo apt-get -yqq install libpq-dev
       - run: bundle config --local path vendor/bundle
 
       - uses: actions/cache@v2
         with:
           path: vendor/bundle
           key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gems-
+          restore-keys: ${{ runner.os }}-gems-
 
-      - run: sudo apt-get -yqq install libpq-dev
       - run: bundle
-      - run: |
-          bin/rails db:test:prepare
-          bin/rspec --format RSpec::Github::Formatter
+      - run: bin/rails db:test:prepare
+      - run: bin/rspec --format RSpec::Github::Formatter
