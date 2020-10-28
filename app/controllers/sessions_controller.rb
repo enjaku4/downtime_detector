@@ -6,11 +6,11 @@ class SessionsController < ApplicationController
 
     if outcome.valid?
       sign_in(outcome.result)
-      redirect_to web_addresses_path
     else
       flash[:danger] = outcome.errors.full_messages.to_sentence
-      redirect_to root_path
     end
+
+    redirect_to root_path
   end
 
   def destroy

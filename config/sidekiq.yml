@@ -1,5 +1,9 @@
 :max_retries: 0
 
+:queues:
+  - default
+  - mailers
+
 production:
   :schedule:
     ping_delegation_job:

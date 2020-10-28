@@ -3,7 +3,7 @@ module WebAddresses
     string :url
     object :user
 
-    validates :url, presence: true
+    validates :url, presence: true, format: { with: URI.regexp, message: 'must be valid' }
 
     def execute
       web_address = WebAddress.find_or_initialize_by(url: url)

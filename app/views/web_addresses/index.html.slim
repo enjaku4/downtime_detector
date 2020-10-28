@@ -25,3 +25,21 @@
       p You have no web addresses added.
 
     = link_to 'Add web address', new_web_address_path, class: 'btn btn-primary'
+
+    hr
+
+    h5 E-mail for receiving notifications
+
+    .row
+      .col-12.col-md-6.offset-md-3.text-center
+
+        - if current_user.email
+          p: u = current_user.email
+          = link_to 'Delete email', delete_email_users_path, method: :patch, class: 'btn btn-warning btn-sm', data: { confirm: 'Are you sure?' }
+
+        - else
+          = form_with url: update_email_users_path, method: :patch, local: true do |f|
+            = render partial: 'shared/flash_messages', locals: { flash: flash }
+            .form-group
+              = f.text_field :email, placeholder: 'e-mail', class: 'form-control'
+            = f.submit 'Add', class: 'btn btn-primary btn-sm'
