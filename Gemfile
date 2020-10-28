@@ -37,4 +37,5 @@ group :test do
   gem 'database_cleaner-active_record'
   gem 'spring-commands-rspec'
   gem 'rails-controller-testing'
+  gem 'rspec-github', require: false
 end
