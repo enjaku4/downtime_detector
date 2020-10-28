@@ -9,23 +9,27 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
+    env:
+      RAILS_ENV: test
+      DATABASE_HOST: localhost
+
     services:
       db:
-        image: postgres:12.2  
-        ports: 
+        image: postgres:12.2
+        ports:
           - 5432:5432
         env:
           POSTGRES_HOST_AUTH_METHOD: trust
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-    
+
     steps:
       - uses: actions/checkout@v2
 
       - uses: actions/setup-ruby@v1
         with:
           ruby-version: 2.6.6
-      
+
       - uses: actions/cache@v2
         with:
           path: vendor/bundle
@@ -33,11 +37,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
 
-      - name: Build and test
-        env:
-          RAILS_ENV: test
+      - name: bundle
         run: |
           sudo apt-get -yqq install libpq-dev
           bundle
-          bin/rails db:test:prepare
-          bin/rails rspec
+
+      # - name: test
+      #   run: |
+      #     bin/rails db:test:prepare
+      #     bin/rails rspec
