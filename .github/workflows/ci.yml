@@ -72,6 +72,7 @@ jobs:
           cache-to: type=inline
           build-args: |
             RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
+            DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/downtime_detector:${{ github.sha }}
             ${{ secrets.DOCKERHUB_USERNAME }}/downtime_detector:latest
