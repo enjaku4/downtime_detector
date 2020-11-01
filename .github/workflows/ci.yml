@@ -60,7 +60,7 @@ jobs:
 
       - uses: docker/login-action@v1
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          username: enjaku
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - uses: docker/build-push-action@v2
@@ -68,11 +68,10 @@ jobs:
           context: .
           file: ./Dockerfile.prod
           push: true
-          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/downtime_detector:latest
+          cache-from: type=registry,ref=enjaku/downtime_detector:latest
           cache-to: type=inline
           build-args: |
             RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
-            DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/downtime_detector:${{ github.sha }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/downtime_detector:latest
+            enjaku/downtime_detector:${{ github.sha }}
+            enjaku/downtime_detector:latest
