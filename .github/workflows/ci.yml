@@ -70,7 +70,7 @@ jobs:
           file: ./Dockerfile.prod
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/app:${{ github.sha }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/app:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/downtime_detector:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/downtime_detector:latest
           build-args: |
             RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
