@@ -49,7 +49,7 @@ jobs:
 
     needs: test
     # TODO run on master branch only
-    # if: github.ref == 'refs/heads/master'
+    if: ${{ github.ref == 'refs/heads/deploy' }}
 
     steps:
       - run: echo success!!!

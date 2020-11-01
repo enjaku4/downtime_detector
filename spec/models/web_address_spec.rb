@@ -28,7 +28,7 @@ describe WebAddress, type: :model do
       let(:http_status_code) { 500 }
 
       it 'sets the http status code' do
-        expect { subject }.to change { web_address.http_status_code }.to(404)
+        expect { subject }.to change { web_address.http_status_code }.to(500)
       end
 
       it 'sets the status' do
