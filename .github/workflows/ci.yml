@@ -77,8 +77,8 @@ jobs:
           push: true
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
-          build-args: |
-            RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/downtime_detector:${{ github.sha }}
             ${{ secrets.DOCKERHUB_USERNAME }}/downtime_detector:latest
+          build-args: |
+            RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
