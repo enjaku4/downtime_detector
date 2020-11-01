@@ -6,7 +6,7 @@
 .row
   .col-12.col-md-6.offset-md-3.text-center
     = form_with url: session_path, local: true do |f|
-      = recaptcha_v3(action: 'sign_in/sign_up') if Rails.env.production?
+      = recaptcha_for(action: 'sign_in/sign_up')
       = render partial: 'shared/flash_messages', locals: { flash: flash }
       .form-group
         = f.text_field :nickname, placeholder: 'Nickname', class: 'form-control'

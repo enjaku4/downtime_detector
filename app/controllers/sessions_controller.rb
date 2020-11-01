@@ -1,6 +1,8 @@
 class SessionsController < ApplicationController
+  include RecaptchaValidatable
+
   before_action :authenticate_user, only: :destroy
-  before_action :validate_recaptcha, only: :create, if: -> { Rails.env.production? }
+  before_action :validate_recaptcha, only: :create
 
   def create
     outcome = AuthenticationInteraction.run(nickname: params[:nickname], password: params[:password])
@@ -18,14 +20,4 @@ class SessionsController < ApplicationController
     sign_out
     redirect_to root_path
   end
-
-  private
-
-    def validate_recaptcha
-      unless verify_recaptcha(action: 'sign_in/sign_up', minimum_score: 0.5)
-        flash[:danger] = flash[:recaptcha_error]
-        flash.delete(:recaptcha_error)
-        redirect_to root_path
-      end
-    end
 end
