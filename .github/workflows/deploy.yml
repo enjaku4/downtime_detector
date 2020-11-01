@@ -3,20 +3,22 @@ name: deploy
 on:
   push:
     branches: [ master ]
-  # delete this when ready
+  # TODO delete this when ready
   pull_request:
     branches: [ master ]
 
 jobs:
   build:
+    if: startsWith(github.sha, github.event.client_payload.text)
+
     runs-on: ubuntu-latest
 
     steps:
       - uses: lewagon/wait-on-check-action@v0.1
         with:
-          ref: master # can be commit SHA or tag too
-          check-name: test # name of the existing check
+          ref: master
+          check-name: test
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 20 # seconds
+          wait-interval: 20
 
       - run: echo success!!!
