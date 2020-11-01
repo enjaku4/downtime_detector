@@ -1,4 +1,4 @@
-name: test
+name: CI/CD
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  rspec:
+  test:
     runs-on: ubuntu-latest
 
     env:
@@ -43,3 +43,9 @@ jobs:
       - run: bundle
       - run: bin/rails db:test:prepare
       - run: bin/rspec --format RSpec::Github::Formatter
+
+  build:
+    needs: test
+    if: github.ref == 'refs/heads/master'
+
+    run: echo success!!!
