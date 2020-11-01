@@ -3,6 +3,9 @@ name: deploy
 on:
   push:
     branches: [ master ]
+  # delete this when ready
+  pull_request:
+    branches: [ master ]
 
 jobs:
   build:
