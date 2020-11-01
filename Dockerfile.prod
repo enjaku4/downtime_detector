@@ -12,10 +12,10 @@ ENV REDIS_URL=redis://redis:6379/0
 RUN mkdir /downtime_detector
 WORKDIR /downtime_detector
 
-COPY Gemfile*
+COPY Gemfile* ./
 
 RUN bundle
 
-COPY . /downtime_detector
+COPY . ./
 
 RUN bin/rails assets:precompile
