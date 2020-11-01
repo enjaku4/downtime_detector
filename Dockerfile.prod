@@ -14,8 +14,8 @@ RUN mkdir /downtime_detector
 WORKDIR /downtime_detector
 
 COPY . ./
-# COPY --from=downtime_detector:latest /bundle/vendor /bundle/vendor
-# COPY --from=downtime_detector:latest /downtime_detector/public/assets ./public/assets
+COPY --from=downtime_detector:latest /bundle/vendor /bundle/vendor
+COPY --from=downtime_detector:latest /downtime_detector/public/assets ./public/assets
 
 RUN bundle
 RUN bin/rails assets:precompile
