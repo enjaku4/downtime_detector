@@ -4,6 +4,13 @@
   - default
   - mailers
 
+development:
+  :schedule:
+    ping_delegation_job:
+      every: 5m
+      class: WebAddresses::PingDelegationJob
+      enabled: false
+
 production:
   :schedule:
     ping_delegation_job:
