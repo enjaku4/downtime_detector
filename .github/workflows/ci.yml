@@ -76,7 +76,7 @@ jobs:
           file: ./Dockerfile.prod
           push: true
           cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/downtime_detector:${{ github.sha }}
             ${{ secrets.DOCKERHUB_USERNAME }}/downtime_detector:latest
