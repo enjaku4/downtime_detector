@@ -48,8 +48,8 @@ jobs:
     runs-on: ubuntu-latest
 
     needs: test
-    # TODO only on master branch
-    if: github.ref == 'refs/heads/deploy'
+    # TODO run on master branch only
+    # if: github.ref == 'refs/heads/master'
 
     steps:
       - run: echo success!!!
