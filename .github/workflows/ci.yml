@@ -68,6 +68,8 @@ jobs:
           context: .
           file: ./Dockerfile.prod
           push: true
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/downtime_detector:latest
+          cache-to: type=inline
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/downtime_detector:${{ github.sha }}
             ${{ secrets.DOCKERHUB_USERNAME }}/downtime_detector:latest
