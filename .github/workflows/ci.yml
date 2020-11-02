@@ -68,8 +68,6 @@ jobs:
           context: .
           file: ./Dockerfile.prod
           push: true
-          cache-from: type=registry,ref=enjaku/downtime_detector:latest
-          cache-to: type=inline
           build-args: |
             RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
           tags: |
