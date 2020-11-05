@@ -5,5 +5,5 @@
     = form_with model: @web_address, local: true do |f|
       = render partial: 'shared/flash_messages', locals: { flash: flash }
       .form-group
-        = f.text_field :url, placeholder: 'URL', class: 'form-control'
+        = f.text_field :url, placeholder: 'https://www.example.com', class: 'form-control'
       = f.submit 'Add', class: 'btn btn-primary'

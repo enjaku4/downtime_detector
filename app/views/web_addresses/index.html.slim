@@ -41,5 +41,5 @@
           = form_with url: update_email_users_path, method: :patch, local: true do |f|
             = render partial: 'shared/flash_messages', locals: { flash: flash }
             .form-group
-              = f.text_field :email, placeholder: 'e-mail', class: 'form-control'
+              = f.text_field :email, placeholder: 'email@example.com', class: 'form-control'
             = f.submit 'Add', class: 'btn btn-primary btn-sm'
