@@ -9,20 +9,20 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    # TODO uncomment this
+    # env:
+    #   RAILS_ENV: test
+    #   RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+    #   DATABASE_HOST: localhost
 
-    env:
-      RAILS_ENV: test
-      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-      DATABASE_HOST: localhost
-
-    services:
-      db:
-        image: postgres:12.2
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_HOST_AUTH_METHOD: trust
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    # services:
+    #   db:
+    #     image: postgres:12.2
+    #     ports:
+    #       - 5432:5432
+    #     env:
+    #       POSTGRES_HOST_AUTH_METHOD: trust
+    #     options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
       - uses: actions/checkout@v2
@@ -95,3 +95,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: ./docker-compose.prod.yml
           target: /home/enjaku/apps/downtime_detector
+
+      - uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: docker pull enjaku/downtime_detector:latest
+          host: 161.35.92.31
+          username: enjaku
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
