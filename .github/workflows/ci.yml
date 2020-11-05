@@ -95,15 +95,13 @@ jobs:
           target: /home/enjaku/apps/downtime_detector
 
       - uses: appleboy/ssh-action@master
-        env:
-          dockerfile: /home/enjaku/apps/downtime_detector/docker-compose.prod.yml
         with:
           host: 161.35.92.31
           username: enjaku
           key: ${{ secrets.SSH_PRIVATE_KEY}}
           script: |
             docker pull enjaku/downtime_detector:latest
-            docker-compose -f $dockerfile run --rm web bin/rails db:migrate
-            docker-compose -f $dockerfile stop -t 30 sidekiq
-            docker-compose -f $dockerfile up -d web
-            docker-compose -f $dockerfile up -d sidekiq
+            docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.prod.yml run --rm web bin/rails db:migrate
+            docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.prod.yml stop -t 30 sidekiq
+            docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.prod.yml up -d web
+            docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.prod.yml up -d sidekiq
