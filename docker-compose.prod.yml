@@ -3,16 +3,16 @@ version: '3'
 services:
 
   web:
-    image: downtime_detector:latest
+    image: enjaku/downtime_detector:latest
     depends_on:
       - db
       - redis
     ports:
-      - '3000:80'
+      - '3000:3000'
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
 
   sidekiq:
-    image: downtime_detector:latest
+    image: enjaku/downtime_detector:latest
     depends_on:
       - db
       - redis

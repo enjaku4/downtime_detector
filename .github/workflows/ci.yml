@@ -25,24 +25,24 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-      - uses: actions/checkout@v2
+      # - uses: actions/checkout@v2
+      #
+      # - uses: actions/setup-ruby@v1
+      #   with:
+      #     ruby-version: 2.6.6
+      #
+      # - run: sudo apt-get -yqq install libpq-dev
+      # - run: bundle config --local path vendor/bundle
+      #
+      # - uses: actions/cache@v2
+      #   with:
+      #     path: vendor/bundle
+      #     key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+      #     restore-keys: ${{ runner.os }}-gems-
 
-      - uses: actions/setup-ruby@v1
-        with:
-          ruby-version: 2.6.6
-
-      - run: sudo apt-get -yqq install libpq-dev
-      - run: bundle config --local path vendor/bundle
-
-      - uses: actions/cache@v2
-        with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: ${{ runner.os }}-gems-
-
-      - run: bundle
-      - run: bin/rails db:test:prepare
-      - run: bin/rspec --format RSpec::Github::Formatter
+      # - run: bundle
+      # - run: bin/rails db:test:prepare
+      # - run: bin/rspec --format RSpec::Github::Formatter
 
   build:
     runs-on: ubuntu-latest
@@ -74,3 +74,14 @@ jobs:
           tags: |
             enjaku/downtime_detector:${{ github.sha }}
             enjaku/downtime_detector:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    needs: build
+    # TODO run on master branch only
+    # if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/pull/9/merge'
+
+    steps:
+      - uses: actions/checkout@v2
