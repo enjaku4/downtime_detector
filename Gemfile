@@ -19,6 +19,7 @@ gem 'active_interaction', '~> 3.8'
 gem 'bcrypt'
 gem 'faraday'
 gem 'recaptcha'
+gem 'airbrake'
 
 group :development, :test do
   gem 'byebug'
