@@ -99,6 +99,10 @@ jobs:
       - uses: garygrossgarten/github-action-ssh@release
         with:
           command: docker pull enjaku/downtime_detector:latest
+          host: 161.35.92.31
+          username: enjaku
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
+        with:
           command: docker-compose run --rm web bin/rails db:migrate
           host: 161.35.92.31
           username: enjaku
