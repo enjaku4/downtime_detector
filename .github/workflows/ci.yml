@@ -96,14 +96,11 @@ jobs:
           source: ./docker-compose.prod.yml
           target: /home/enjaku/apps/downtime_detector
 
-      - uses: garygrossgarten/github-action-ssh@release
+      - uses: appleboy/ssh-action@master
         with:
-          command: docker pull enjaku/downtime_detector:latest
           host: 161.35.92.31
           username: enjaku
-          privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
-        with:
-          command: docker-compose run --rm web bin/rails db:migrate
-          host: 161.35.92.31
-          username: enjaku
-          privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
+          key: ${{ secrets.SSH_PRIVATE_KEY}}
+          script: |
+            docker pull enjaku/downtime_detector:latest
+            docker-compose run --rm web bin/rails db:migrate
