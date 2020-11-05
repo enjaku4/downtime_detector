@@ -103,4 +103,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY}}
           script: |
             docker pull enjaku/downtime_detector:latest
-            docker run --rm enjaku/downtime_detector:latest bin/rails db:migrate
+            docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.prod.yml run --rm web bin/rails db:migrate
