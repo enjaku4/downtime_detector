@@ -1,4 +1,8 @@
 class WebAddressesController < ApplicationController
+  include RecaptchaValidatable
+
+  before_action -> { validate_recaptcha(action: 'create_web_address') }, only: :create
+
   def index
     @web_addresses = current_user.web_addresses.order(:url)
   end
