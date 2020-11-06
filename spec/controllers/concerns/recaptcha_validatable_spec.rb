@@ -4,7 +4,7 @@ describe RecaptchaValidatable, type: :controller do
   controller(ApplicationController) do
     include RecaptchaValidatable
 
-    before_action :validate_recaptcha
+    before_action -> { validate_recaptcha(action: 'foo') }
 
     def fake_action() head :ok end
   end
@@ -22,7 +22,8 @@ describe RecaptchaValidatable, type: :controller do
       before { allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('production')) }
 
       context 'if the recaptcha is verified' do
-        before { allow_any_instance_of(ApplicationController).to receive(:verify_recaptcha).and_return(true) }
+        before { allow_any_instance_of(ApplicationController).to receive(:verify_recaptcha)
+          .with(hash_including(action: 'foo')).and_return(true) }
 
         it 'responds with the code 200' do
           expect(subject).to have_http_status(200)
@@ -30,7 +31,8 @@ describe RecaptchaValidatable, type: :controller do
       end
 
       context 'if the recaptcha is not verified' do
-        before { allow_any_instance_of(ApplicationController).to receive(:verify_recaptcha).and_return(false) }
+        before { allow_any_instance_of(ApplicationController).to receive(:verify_recaptcha)
+          .with(hash_including(action: 'foo')).and_return(false) }
 
         it 'redirects to the root path' do
           expect(subject).to redirect_to(root_path)
