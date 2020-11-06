@@ -14,5 +14,5 @@ development:
 production:
   :schedule:
     ping_delegation_job:
-      every: 5m
+      every: 1m
       class: WebAddresses::PingDelegationJob
