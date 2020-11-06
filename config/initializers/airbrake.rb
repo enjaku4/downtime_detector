@@ -66,6 +66,10 @@ end
 # (under context/versions/dependencies).
 # Airbrake.add_filter(Airbrake::Filters::DependencyFilter.new)
 
+Airbrake.add_filter do |notice|
+  notice.ignore! if notice.stash[:exception].is_a?(SignalException)
+end
+
 # If you want to convert your log messages to Airbrake errors, we offer an
 # integration with the Logger class from stdlib.
 # https://github.com/airbrake/airbrake#logger
