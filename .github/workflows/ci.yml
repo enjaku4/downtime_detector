@@ -103,3 +103,4 @@ jobs:
             docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.prod.yml stop -t 30 sidekiq
             docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.prod.yml up -d web
             docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.prod.yml up -d sidekiq
+            curl -X POST -H "Content-Type: application/json" -d '{"environment":"production","repository":"https://github.com/enjaku/downtime_detector","revision":"${{ github.sha }}"}' "https://airbrake.io/api/v4/projects/${{ secrets.AIRBRAKE_PROJECT_ID }}/deploys?key=${{ secrets.AIRBRAKE_PROJECT_KEY }}"
