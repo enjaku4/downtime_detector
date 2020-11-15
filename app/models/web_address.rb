@@ -28,6 +28,7 @@ class WebAddress < ApplicationRecord
   end
 
   def mark_as_faulty!
+    self.http_status_code = nil
     update_status!(:error)
   end
 

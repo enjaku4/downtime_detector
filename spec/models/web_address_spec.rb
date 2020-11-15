@@ -96,10 +96,14 @@ describe WebAddress, type: :model do
   describe 'mark_as_faulty!' do
     subject { web_address.mark_as_faulty! }
 
-    let(:web_address) { create(:web_address) }
+    let(:web_address) { create(:web_address, http_status_code: 200) }
     let(:date_time) { DateTime.parse('2020-05-07 11:05:30') }
 
     before { allow(DateTime).to receive(:current).and_return(date_time) }
+
+    it 'resets the http status code' do
+      expect { subject }.to change { web_address.http_status_code }.to(nil)
+    end
 
     it 'sets the error status' do
       expect { subject }.to change { web_address.status }.to('error')
