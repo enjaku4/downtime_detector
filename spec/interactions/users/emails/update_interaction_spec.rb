@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Users::EmailUpdateInteraction do
+describe Users::Emails::UpdateInteraction do
   subject { described_class.run(user: user, email: email) }
 
   let(:user) { create(:user) }

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Users::EmailDeletionInteraction do
+describe Users::Emails::DeletionInteraction do
   subject { described_class.run(user: user) }
 
   let(:user) { create(:user, email: 'foo@bar.baz') }
