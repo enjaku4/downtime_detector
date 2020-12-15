@@ -8,12 +8,13 @@ describe WebAddresses::PingJob, type: :job do
   before { allow(WebAddress).to receive(:find).with(web_address.id).and_return(web_address) }
 
   context 'if pinging is successful' do
-    let(:faraday_response_double) { double(status: 200) }
+    let(:faraday_response_double) { double }
 
     before { allow(Faraday).to receive(:get).with(web_address.url).and_return(faraday_response_double) }
 
-    it 'updates the pinging result' do
-      expect(web_address).to receive(:set_ping_result!).with(200)
+    it 'processes the response' do
+      expect(WebAddresses::Results::ResponseProcessingInteraction).to receive(:run!)
+        .with(web_address: web_address, response: faraday_response_double)
       subject
     end
   end
@@ -21,8 +22,9 @@ describe WebAddresses::PingJob, type: :job do
   context 'if pinging is unsuccessful' do
     before { allow(Faraday).to receive(:get).with(web_address.url).and_raise(Faraday::TimeoutError) }
 
-    it 'marks the web address as faulty' do
-      expect(web_address).to receive(:mark_as_faulty!)
+    it 'processes the error' do
+      expect(WebAddresses::Results::ErrorProcessingInteraction).to receive(:run!)
+        .with(web_address: web_address, exception: instance_of(Faraday::TimeoutError))
       subject
     end
   end

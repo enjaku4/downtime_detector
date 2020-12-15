@@ -16,120 +16,107 @@ describe WebAddress, type: :model do
     end
   end
 
-  describe '#set_ping_result!' do
-    subject { web_address.set_ping_result!(http_status_code) }
+  describe '#faulty?' do
+    subject { web_address.faulty? }
 
+    let(:web_address) { build(:web_address, status: status) }
+
+    context "when the web address\'s status is down" do
+      let(:status) { :down }
+
+      it { is_expected.to be true }
+    end
+
+    context "when the web address\'s status is error" do
+      let(:status) { :error }
+
+      it { is_expected.to be true }
+    end
+
+    context "when the web address\'s status is up" do
+      let(:status) { :up }
+
+      it { is_expected.to be false }
+    end
+
+    context "when the web address\'s status is unknown" do
+      let(:status) { :unknown }
+
+      it { is_expected.to be false }
+    end
+  end
+
+  describe '#update_ping_time!' do
     let(:web_address) { create(:web_address) }
-    let(:date_time) { DateTime.parse('2020-05-07 11:05:30') }
+    let(:datetime) { DateTime.parse('2020-12-15T17:19:13+00:00') }
 
-    before { allow(DateTime).to receive(:current).and_return(date_time) }
+    before { allow(DateTime).to receive(:current).and_return(datetime) }
 
-    context 'if the http status code is 5xx' do
-      let(:http_status_code) { 500 }
+    it "changes the web address\'s pinged_at to DateTime#current" do
+      expect { web_address.update_ping_time! }.to change { web_address.pinged_at }.to(datetime)
+    end
+  end
 
-      it 'sets the http status code' do
-        expect { subject }.to change { web_address.http_status_code }.to(500)
-      end
+  describe '#reset_notifications!' do
+    subject { web_address.reset_notifications! }
 
-      it 'sets the status' do
-        expect { subject }.to change { web_address.status }.to('down')
-      end
+    let(:web_address) { create(:web_address, notification_sent: notification_sent) }
 
-      it 'sets the pinging time' do
-        expect { subject }.to change { web_address.pinged_at }.to(date_time)
-      end
+    context 'if the notification_sent flag was true' do
+      let(:notification_sent) { true }
 
-      it 'notifies the users' do
-        expect { subject }.to enqueue_job(WebAddresses::UsersNotificationJob).with(web_address.id)
-      end
-
-      it 'sets the notification sent flag to true' do
-        expect { subject }.to change { web_address.notification_sent }.to(true)
-      end
-
-      context 'if the notification sent flag was set to true' do
-        before { web_address.notification_sent = true }
-
-        it 'does not change the flag' do
-          expect { subject }.not_to change { web_address.notification_sent }.from(true)
-        end
-
-        it 'does not notify the users' do
-          expect { subject }.not_to enqueue_job(WebAddresses::UsersNotificationJob)
-        end
+      it 'changes the notification_sent flag to false' do
+        expect { subject }.to change { web_address.notification_sent }.from(true).to(false)
       end
     end
 
-    context 'if the http status code is between 2xx and 4xx' do
-      let(:http_status_code) { 301 }
+    context 'if the notification_sent flag was false' do
+      let(:notification_sent) { false }
 
-      it 'sets the http status code' do
-        expect { subject }.to change { web_address.http_status_code }.to(301)
-      end
-
-      it 'sets the status' do
-        expect { subject }.to change { web_address.status }.to('up')
-      end
-
-      it 'sets the pinging time' do
-        expect { subject }.to change { web_address.pinged_at }.to(date_time)
-      end
-
-      it 'does not notify the users' do
-        expect { subject }.not_to enqueue_job(WebAddresses::UsersNotificationJob)
-      end
-
-      it 'does not set the notification sent flag to true' do
+      it 'changes nothing' do
         expect { subject }.not_to change { web_address.notification_sent }.from(false)
-      end
-
-      context 'if the notification sent flag was set to true' do
-        before { web_address.notification_sent = true }
-
-        it 'sets the notification sent flag to false' do
-          expect { subject }.to change { web_address.notification_sent }.to(false)
-        end
       end
     end
   end
 
-  describe 'mark_as_faulty!' do
-    subject { web_address.mark_as_faulty! }
+  describe '#delete_old_problems!' do
+    let(:web_address) { create(:web_address) }
+    let!(:problems) { create_list(:problem, 5, web_address: web_address, created_at: 1.day.ago) }
 
-    let(:web_address) { create(:web_address, http_status_code: 200) }
-    let(:date_time) { DateTime.parse('2020-05-07 11:05:30') }
+    before { create_list(:problem, 5, web_address: web_address, created_at: 2.days.ago) }
 
-    before { allow(DateTime).to receive(:current).and_return(date_time) }
-
-    it 'resets the http status code' do
-      expect { subject }.to change { web_address.http_status_code }.to(nil)
+    it "deletes all the web address\'s problems except for the latest" do
+      web_address.delete_old_problems!
+      expect(web_address.problems).to match_array(problems)
     end
+  end
 
-    it 'sets the error status' do
-      expect { subject }.to change { web_address.status }.to('error')
-    end
+  describe '#notify_users' do
+    subject { web_address.notify_users }
 
-    it 'sets the pinging time' do
-      expect { subject }.to change { web_address.pinged_at }.to(date_time)
-    end
+    let(:web_address) { create(:web_address, notification_sent: notification_sent) }
 
-    it 'notifies the users' do
-      expect { subject }.to enqueue_job(WebAddresses::UsersNotificationJob).with(web_address.id)
-    end
+    context 'if the notification_sent flag is false' do
+      let(:notification_sent) { false }
 
-    it 'sets the notification sent flag to true' do
-      expect { subject }.to change { web_address.notification_sent }.to(true)
-    end
-
-    context 'if the notification sent flag was set to true' do
-      before { web_address.notification_sent = true }
-
-      it 'does not change the flag' do
-        expect { subject }.not_to change { web_address.notification_sent }.from(true)
+      it 'enqueues WebAddresses::UsersNotificationJob' do
+        expect { subject }.to enqueue_job(WebAddresses::UsersNotificationJob).once.with(web_address.id)
       end
 
-      it 'does not notify the users' do
+      it 'changes the notification_sent flag to true' do
+        expect { subject }.to change { web_address.notification_sent }.from(false).to(true)
+      end
+    end
+
+    context 'if the notification_sent flag is true' do
+      let(:notification_sent) { true }
+
+      it 'does not enqueue WebAddresses::UsersNotificationJob' do
         expect { subject }.not_to enqueue_job(WebAddresses::UsersNotificationJob)
+      end
+
+      it 'does not change the notification_sent flag' do
+        expect { subject }.not_to change { web_address.notification_sent }.from(true)
       end
     end
   end
