@@ -8,8 +8,9 @@ module WebAddresses
     def execute
       web_address = WebAddress.find_or_initialize_by(url: url)
 
-      unless user.web_addresses.exists?(web_address.id)
-        web_address.status = :unknown
+      if user.web_addresses.exists?(web_address.id)
+        errors.add(:url, :exists)
+      else
         user.web_addresses << web_address
       end
     end

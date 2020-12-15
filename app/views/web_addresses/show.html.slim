@@ -1,0 +1,21 @@
+.row
+  .col.text-center
+    h2.mb-4 = @web_address.url
+
+    - if @problems.any?
+      .table-responsive.mb-3
+        table.table.table-dark.table-striped.table-bordered.table-sm
+          thead
+            tr
+              th created at
+              th name
+              th description
+          tbody
+            - @problems.each do |problem|
+              tr
+                td = problem.created_at
+                td = problem.name
+                td = problem.description
+
+    - else
+      p No problems have been detected so far

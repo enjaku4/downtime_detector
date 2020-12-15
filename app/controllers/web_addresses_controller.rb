@@ -7,6 +7,11 @@ class WebAddressesController < ApplicationController
     @web_addresses = current_user.web_addresses.order(:url)
   end
 
+  def show
+    @web_address = WebAddress.find(params[:id])
+    @problems = @web_address.problems.latest
+  end
+
   def new
     @web_address = WebAddress.new
   end
