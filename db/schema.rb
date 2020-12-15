@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_27_223601) do
+ActiveRecord::Schema.define(version: 2020_12_15_115016) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "problems", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.bigint "web_address_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["web_address_id"], name: "index_problems_on_web_address_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "nickname", null: false
@@ -36,11 +45,12 @@ ActiveRecord::Schema.define(version: 2020_10_27_223601) do
     t.integer "http_status_code"
     t.datetime "pinged_at"
     t.string "url", null: false
-    t.integer "status", null: false
+    t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "notification_sent", default: false, null: false
     t.index ["url"], name: "index_web_addresses_on_url", unique: true
   end
 
+  add_foreign_key "problems", "web_addresses"
 end

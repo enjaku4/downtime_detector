@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   root to: 'pages#home'
 
   resource :session, only: [:create, :destroy]
-  resources :web_addresses, only: [:index, :new, :create, :destroy]
+  resources :web_addresses, except: [:edit, :update]
   resources :users, only: [] do
     collection do
       patch :update_email

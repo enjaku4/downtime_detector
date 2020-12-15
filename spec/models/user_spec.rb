@@ -7,7 +7,7 @@ describe User, type: :model do
     before { create(:user) }
 
     it 'returns only the users having an email address' do
-      expect(User.with_email).to contain_exactly(user)
+      expect(described_class.with_email).to contain_exactly(user)
     end
   end
 end

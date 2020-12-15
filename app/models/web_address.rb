@@ -19,6 +19,7 @@ class WebAddress < ApplicationRecord
   enum status: { unknown: 0, up: 1, down: 2, error: 3 }
 
   has_and_belongs_to_many :users
+  has_many :problems, dependent: :destroy
 
   scope :ready_to_ping, -> { where('pinged_at IS NULL or pinged_at < ?', 5.minutes.ago) }
 
