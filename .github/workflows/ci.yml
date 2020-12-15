@@ -14,6 +14,7 @@ jobs:
       RAILS_ENV: test
       RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
       DATABASE_HOST: localhost
+      DISABLE_SPRING: 1
 
     services:
       db:
