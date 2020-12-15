@@ -6,3 +6,7 @@ en:
           attributes:
             password:
               incorrect: 'is incorrect'
+        web_addresses/creation_interaction:
+          attributes:
+            url:
+              exists: 'already exists'

@@ -38,8 +38,12 @@ describe WebAddresses::CreationInteraction do
         context 'if the web address is linked with the user' do
           before { user.web_addresses << web_address }
 
-          it 'is valid' do
-            expect(subject).to be_valid
+          it 'is invalid' do
+            expect(subject).to be_invalid
+          end
+
+          it 'has the url exists error' do
+            expect(subject.errors.details[:url]).to include({ error: :exists })
           end
 
           it 'does not create a new web address' do

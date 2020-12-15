@@ -6,7 +6,10 @@ describe WebAddresses::DeletionInteraction do
   let(:user) { create(:user) }
   let(:web_address) { create(:web_address) }
 
-  before { user.web_addresses << web_address }
+  before do
+    create(:problem, web_address: web_address)
+    user.web_addresses << web_address
+  end
 
   describe '#execute' do
     context 'if the web address is linked with a single user' do
@@ -16,6 +19,10 @@ describe WebAddresses::DeletionInteraction do
 
       it 'destroys the web address' do
         expect { subject }.to change { web_address.persisted? }.from(true).to(false)
+      end
+
+      it 'destroys its problems as well' do
+        expect { subject }.to change { web_address.problems.any? }.from(true).to(false)
       end
     end
 
@@ -30,6 +37,10 @@ describe WebAddresses::DeletionInteraction do
 
       it 'does not destroy the web address' do
         expect { subject }.not_to change { web_address.persisted? }.from(true)
+      end
+
+      it 'does not destroy any problems' do
+        expect { subject }.not_to change { web_address.problems.any? }.from(true)
       end
     end
   end
