@@ -1,6 +1,7 @@
 class WebAddressesController < ApplicationController
   include RecaptchaValidatable
 
+  before_action :authenticate_user
   before_action -> { validate_recaptcha(action: 'create_web_address') }, only: :create
 
   def index
