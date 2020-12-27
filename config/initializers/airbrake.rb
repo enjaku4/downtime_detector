@@ -67,7 +67,9 @@ end
 # Airbrake.add_filter(Airbrake::Filters::DependencyFilter.new)
 
 Airbrake.add_filter do |notice|
-  notice.ignore! if notice.stash[:exception].is_a?(SignalException)
+  if notice.stash[:exception].class.in?([SignalException, ActionController::InvalidAuthenticityToken])
+    notice.ignore!
+  end
 end
 
 # If you want to convert your log messages to Airbrake errors, we offer an
