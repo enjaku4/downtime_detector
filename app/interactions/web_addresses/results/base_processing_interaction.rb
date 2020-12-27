@@ -12,7 +12,7 @@ module WebAddresses
         if web_address.faulty?
           create_problem
           web_address.delete_old_problems!
-          web_address.notify_users
+          notify_users
         end
       end
 
@@ -24,6 +24,13 @@ module WebAddresses
 
         def create_problem
           raise NotImplementedError
+        end
+
+        def notify_users
+          unless web_address.notifications_sent?
+            WebAddresses::UsersNotificationJob.perform_later(web_address.id)
+            web_address.update!(notifications_sent: true)
+          end
         end
     end
   end
