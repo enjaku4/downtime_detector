@@ -6,19 +6,19 @@ shared_examples_for "the processing of the web address pinging result with \'fau
     subject
   end
 
-  context 'if the notification_sent flag was true' do
-    before { web_address.notification_sent = true }
+  context 'if the notifications_sent flag was true' do
+    before { web_address.notifications_sent = true }
 
-    it 'does not change the notification_sent flag' do
-      expect { subject }.not_to change { web_address.notification_sent }.from(true)
+    it 'does not change the notifications_sent flag' do
+      expect { subject }.not_to change { web_address.notifications_sent }.from(true)
     end
   end
 
-  context 'if the notification_sent flag was false' do
-    before { web_address.notification_sent = false }
+  context 'if the notifications_sent flag was false' do
+    before { web_address.notifications_sent = false }
 
-    it 'changes the notification_sent flag' do
-      expect { subject }.to change { web_address.notification_sent }.from(false).to(true)
+    it 'changes the notifications_sent flag' do
+      expect { subject }.to change { web_address.notifications_sent }.from(false).to(true)
     end
   end
 
@@ -28,8 +28,7 @@ shared_examples_for "the processing of the web address pinging result with \'fau
   end
 
   it 'sends notifications' do
-    expect(web_address).to receive(:notify_users)
-    subject
+    expect { subject }.to enqueue_job(WebAddresses::UsersNotificationJob).once.with(web_address.id)
   end
 end
 
@@ -39,19 +38,19 @@ shared_examples_for "the processing of the web address pinging result with \'up\
     subject
   end
 
-  context 'if the notification_sent flag was true' do
-    before { web_address.notification_sent = true }
+  context 'if the notifications_sent flag was true' do
+    before { web_address.notifications_sent = true }
 
-    it 'changes the notification_sent flag' do
-      expect { subject }.to change { web_address.notification_sent }.from(true).to(false)
+    it 'changes the notifications_sent flag' do
+      expect { subject }.to change { web_address.notifications_sent }.from(true).to(false)
     end
   end
 
-  context 'if the notification_sent flag was false' do
-    before { web_address.notification_sent = false }
+  context 'if the notifications_sent flag was false' do
+    before { web_address.notifications_sent = false }
 
-    it 'does not change the notification_sent flag' do
-      expect { subject }.not_to change { web_address.notification_sent }.from(false)
+    it 'does not change the notifications_sent flag' do
+      expect { subject }.not_to change { web_address.notifications_sent }.from(false)
     end
   end
 
@@ -61,8 +60,7 @@ shared_examples_for "the processing of the web address pinging result with \'up\
   end
 
   it 'does not send notifications' do
-    expect(web_address).not_to receive(:notify_users)
-    subject
+    expect { subject }.not_to enqueue_job(WebAddresses::UsersNotificationJob)
   end
 
   it 'does not create any problems' do

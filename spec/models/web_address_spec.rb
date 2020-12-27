@@ -60,21 +60,21 @@ describe WebAddress, type: :model do
   describe '#reset_notifications!' do
     subject { web_address.reset_notifications! }
 
-    let(:web_address) { create(:web_address, notification_sent: notification_sent) }
+    let(:web_address) { create(:web_address, notifications_sent: notifications_sent) }
 
-    context 'if the notification_sent flag was true' do
-      let(:notification_sent) { true }
+    context 'if the notifications_sent flag was true' do
+      let(:notifications_sent) { true }
 
-      it 'changes the notification_sent flag to false' do
-        expect { subject }.to change { web_address.notification_sent }.from(true).to(false)
+      it 'changes the notifications_sent flag to false' do
+        expect { subject }.to change { web_address.notifications_sent }.from(true).to(false)
       end
     end
 
-    context 'if the notification_sent flag was false' do
-      let(:notification_sent) { false }
+    context 'if the notifications_sent flag was false' do
+      let(:notifications_sent) { false }
 
       it 'changes nothing' do
-        expect { subject }.not_to change { web_address.notification_sent }.from(false)
+        expect { subject }.not_to change { web_address.notifications_sent }.from(false)
       end
     end
   end
@@ -88,36 +88,6 @@ describe WebAddress, type: :model do
     it "deletes all the web address\'s problems except for the latest" do
       web_address.delete_old_problems!
       expect(web_address.problems).to match_array(problems)
-    end
-  end
-
-  describe '#notify_users' do
-    subject { web_address.notify_users }
-
-    let(:web_address) { create(:web_address, notification_sent: notification_sent) }
-
-    context 'if the notification_sent flag is false' do
-      let(:notification_sent) { false }
-
-      it 'enqueues WebAddresses::UsersNotificationJob' do
-        expect { subject }.to enqueue_job(WebAddresses::UsersNotificationJob).once.with(web_address.id)
-      end
-
-      it 'changes the notification_sent flag to true' do
-        expect { subject }.to change { web_address.notification_sent }.from(false).to(true)
-      end
-    end
-
-    context 'if the notification_sent flag is true' do
-      let(:notification_sent) { true }
-
-      it 'does not enqueue WebAddresses::UsersNotificationJob' do
-        expect { subject }.not_to enqueue_job(WebAddresses::UsersNotificationJob)
-      end
-
-      it 'does not change the notification_sent flag' do
-        expect { subject }.not_to change { web_address.notification_sent }.from(true)
-      end
     end
   end
 end
