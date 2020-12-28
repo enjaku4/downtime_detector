@@ -20,6 +20,8 @@ gem 'bcrypt'
 gem 'faraday'
 gem 'recaptcha'
 gem 'airbrake'
+gem 'will_paginate', '~> 3.1.0'
+gem 'will_paginate-bootstrap4'
 
 group :development, :test do
   gem 'byebug'

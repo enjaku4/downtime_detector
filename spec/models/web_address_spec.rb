@@ -78,16 +78,4 @@ describe WebAddress, type: :model do
       end
     end
   end
-
-  describe '#delete_old_problems!' do
-    let(:web_address) { create(:web_address) }
-    let!(:problems) { create_list(:problem, 5, web_address: web_address, created_at: 1.day.ago) }
-
-    before { create_list(:problem, 5, web_address: web_address, created_at: 2.days.ago) }
-
-    it "deletes all the web address\'s problems except for the latest" do
-      web_address.delete_old_problems!
-      expect(web_address.problems).to match_array(problems)
-    end
-  end
 end

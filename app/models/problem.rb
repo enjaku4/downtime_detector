@@ -19,6 +19,4 @@
 #
 class Problem < ApplicationRecord
   belongs_to :web_address
-
-  scope :latest, -> { order(created_at: :desc).limit(5) }
 end

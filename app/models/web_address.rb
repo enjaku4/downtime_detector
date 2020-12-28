@@ -34,8 +34,4 @@ class WebAddress < ApplicationRecord
   def reset_notifications!
     update!(notifications_sent: false)
   end
-
-  def delete_old_problems!
-    problems.where.not(id: problems.latest).destroy_all
-  end
 end

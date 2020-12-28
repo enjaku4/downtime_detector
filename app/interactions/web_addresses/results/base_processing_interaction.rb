@@ -11,7 +11,6 @@ module WebAddresses
 
         if web_address.faulty?
           create_problem
-          web_address.delete_old_problems!
           notify_users
         end
       end

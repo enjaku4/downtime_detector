@@ -10,7 +10,7 @@ class WebAddressesController < ApplicationController
 
   def show
     @web_address = WebAddress.find(params[:id])
-    @problems = @web_address.problems.latest
+    @problems = @web_address.problems.order(created_at: :desc).paginate(page: params[:page], per_page: 5)
   end
 
   def new
