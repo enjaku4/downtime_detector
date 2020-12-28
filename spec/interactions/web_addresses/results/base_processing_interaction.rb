@@ -22,11 +22,6 @@ shared_examples_for "the processing of the web address pinging result with \'fau
     end
   end
 
-  it 'deletes old problems' do
-    expect(web_address).to receive(:delete_old_problems!)
-    subject
-  end
-
   it 'sends notifications' do
     expect { subject }.to enqueue_job(WebAddresses::UsersNotificationJob).once.with(web_address.id)
   end
@@ -52,11 +47,6 @@ shared_examples_for "the processing of the web address pinging result with \'up\
     it 'does not change the notifications_sent flag' do
       expect { subject }.not_to change { web_address.notifications_sent }.from(false)
     end
-  end
-
-  it 'does not delete old problems' do
-    expect(web_address).not_to receive(:delete_old_problems!)
-    subject
   end
 
   it 'does not send notifications' do

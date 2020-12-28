@@ -17,5 +17,8 @@
                 td = problem.name
                 td = problem.description
 
+      .d-flex.justify-content-center
+        = will_paginate @problems, renderer: WillPaginate::ActionView::BootstrapLinkRenderer
+
     - else
       p No problems have been detected so far
