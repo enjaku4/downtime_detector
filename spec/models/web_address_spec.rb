@@ -58,15 +58,13 @@ describe WebAddress, type: :model do
   end
 
   describe '#reset_notifications!' do
-    subject { web_address.reset_notifications! }
-
     let(:web_address) { create(:web_address, notifications_sent: notifications_sent) }
 
     context 'if the notifications_sent flag was true' do
       let(:notifications_sent) { true }
 
       it 'changes the notifications_sent flag to false' do
-        expect { subject }.to change { web_address.notifications_sent }.from(true).to(false)
+        expect { web_address.reset_notifications! }.to change { web_address.notifications_sent }.from(true).to(false)
       end
     end
 

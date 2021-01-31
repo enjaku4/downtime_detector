@@ -14,7 +14,7 @@ module WebAddresses
         end
 
         def resolve_web_address_status
-          response.status.in?(100...400) ? :up : :down
+          http_status_code.in?(100...400) ? :up : :down
         end
 
         def http_status_code

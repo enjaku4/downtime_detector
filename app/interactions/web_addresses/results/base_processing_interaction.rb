@@ -27,7 +27,7 @@ module WebAddresses
 
         def notify_users
           unless web_address.notifications_sent?
-            WebAddresses::UsersNotificationJob.perform_later(web_address.id)
+            UsersNotificationJob.perform_later(web_address.id)
             web_address.update!(notifications_sent: true)
           end
         end

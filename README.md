@@ -6,4 +6,4 @@ It is a simple downtime detector. You can add any URL and the application will p
 
 ## A note about the architecture
 
-I'm developing the application using Rails and [ActiveInteraction](https://github.com/AaronLasseigne/active_interaction) gem, which helps me to standardise my business logic layer.
+I'm developing the application using Rails and [ActiveInteraction](https://github.com/AaronLasseigne/active_interaction) gem, which helps me to standardise my service layer.
