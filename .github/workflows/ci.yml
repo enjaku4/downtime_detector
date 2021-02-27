@@ -42,7 +42,8 @@ jobs:
           restore-keys: ${{ runner.os }}-gems-
 
       - run: bundle
-      - run: bin/rails db:test:prepare && bin/rspec --format RSpec::Github::Formatter
+      - run: bin/rails db:test:prepare
+      - run: bin/rspec --format RSpec::Github::Formatter
 
   build:
     runs-on: ubuntu-latest
