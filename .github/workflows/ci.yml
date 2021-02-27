@@ -33,6 +33,7 @@ jobs:
           ruby-version: 2.6.6
 
       - run: sudo apt-get -yqq install libpq-dev
+      - run: bundle config --local path vendor/bundle
 
       - uses: actions/cache@v2
         with:
@@ -40,12 +41,8 @@ jobs:
           key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
           restore-keys: ${{ runner.os }}-gems-
 
-      - name: Install gems
-        run: |
-          bundle config --local path vendor/bundle
-          bundle
-          bin/rails db:test:prepare
-          bin/rspec --format RSpec::Github::Formatter
+      - run: bundle
+      - run: bin/rails db:test:prepare && bin/rspec --format RSpec::Github::Formatter
 
   build:
     runs-on: ubuntu-latest
@@ -87,12 +84,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Deploy
-        run: |
-          echo ${{ secrets.SSH_PRIVATE_KEY }} > id_rsa.deploy
-          scp -i id_rsa.deploy docker-compose.prod.yml enjaku@161.35.92.31:/home/enjaku/apps/downtime_detector
-          scp -i id_rsa.deploy deploy.sh enjaku@161.35.92.31:/home/enjaku/apps/downtime_detector
-          ssh -i id_rsa.deploy enjaku@161.35.92.31 '/home/enjaku/apps/downtime_detector/deploy.sh'
+      - run: echo ${{ secrets.SSH_PRIVATE_KEY }} > id_rsa.deploy
+      - run: scp -i id_rsa.deploy docker-compose.prod.yml deploy.sh enjaku@161.35.92.31:/home/enjaku/apps/downtime_detector
+      - run: ssh -i id_rsa.deploy enjaku@161.35.92.31 '/home/enjaku/apps/downtime_detector/deploy.sh'
 
       # - uses: appleboy/scp-action@master
       #   with:
