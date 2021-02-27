@@ -34,13 +34,13 @@ jobs:
 
       - run: sudo apt-get -yqq install libpq-dev
 
-      - name: Install gems
-        uses: actions/cache@v2
+      - uses: actions/cache@v2
         with:
           path: vendor/bundle
           key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
           restore-keys: ${{ runner.os }}-gems-
 
+      - name: Install gems
         run: |
           bundle config --local path vendor/bundle
           bundle
