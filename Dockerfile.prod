@@ -1,6 +1,6 @@
 FROM ruby:2.6.6
 
-RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
+RUN apt-get update -qq && apt-get install -y nodejs postgresql-client nano
 
 ARG RAILS_MASTER_KEY
 
@@ -14,8 +14,8 @@ RUN mkdir /downtime_detector
 WORKDIR /downtime_detector
 
 COPY . ./
-COPY --from=enjaku/downtime_detector:latest /bundle/vendor /bundle/vendor
-COPY --from=enjaku/downtime_detector:latest /downtime_detector/public/assets ./public/assets
+# COPY --from=enjaku/downtime_detector:latest /bundle/vendor /bundle/vendor
+# COPY --from=enjaku/downtime_detector:latest /downtime_detector/public/assets ./public/assets
 
-RUN bundle
+RUN bundle install --without development test
 RUN bin/rails assets:precompile

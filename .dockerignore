@@ -1,6 +1,4 @@
-.tags
-tmp/db
-log
 Dockerfile*
 docker-compose*
 .github
+spec
