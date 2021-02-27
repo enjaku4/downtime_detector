@@ -4,7 +4,6 @@ on:
   push:
     branches: [ master ]
   pull_request:
-    branches: [ master ]
 
 jobs:
   test:
@@ -50,7 +49,7 @@ jobs:
 
     needs: test
 
-    if: github.ref == 'refs/heads/master'
+    # if: github.ref == 'refs/heads/master'
 
     steps:
       - uses: actions/checkout@v2
@@ -80,7 +79,7 @@ jobs:
 
     needs: build
 
-    if: github.ref == 'refs/heads/master'
+    # if: github.ref == 'refs/heads/master'
 
     steps:
       - uses: actions/checkout@v2
@@ -104,4 +103,5 @@ jobs:
             docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.prod.yml stop -t 30 sidekiq
             docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.prod.yml up -d web
             docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.prod.yml up -d sidekiq
-            curl -X POST -H "Content-Type: application/json" -d '{"environment":"production","repository":"https://github.com/enjaku/downtime_detector","revision":"${{ github.sha }}"}' "https://airbrake.io/api/v4/projects/${{ secrets.AIRBRAKE_PROJECT_ID }}/deploys?key=${{ secrets.AIRBRAKE_PROJECT_KEY }}"
+
+      - run: curl -X POST -H "Content-Type: application/json" -d '{"environment":"production","repository":"https://github.com/enjaku/downtime_detector","revision":"${{ github.sha }}"}' "https://airbrake.io/api/v4/projects/${{ secrets.AIRBRAKE_PROJECT_ID }}/deploys?key=${{ secrets.AIRBRAKE_PROJECT_KEY }}"
