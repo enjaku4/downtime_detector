@@ -92,7 +92,9 @@ jobs:
 
       - run: sh -i id_rsa.deploy enjaku@161.35.92.31 '/home/enjaku/apps/downtime_detector/deploy.sh'
 
-      - run: curl -X POST -H "Content-Type: application/json" -d '{"environment":"production","repository":"https://github.com/enjaku/downtime_detector","revision":"${{ github.sha }}"}' "https://airbrake.io/api/v4/projects/${{ secrets.AIRBRAKE_PROJECT_ID }}/deploys?key=${{ secrets.AIRBRAKE_PROJECT_KEY }}"
+      - run: |
+        curl -X POST -H "Content-Type: application/json" \
+          -d '{"environment":"production","repository":"https://github.com/enjaku/downtime_detector","revision":"${{ github.sha }}"}' \ "https://airbrake.io/api/v4/projects/${{ secrets.AIRBRAKE_PROJECT_ID }}/deploys?key=${{ secrets.AIRBRAKE_PROJECT_KEY }}"
 
       # - uses: appleboy/scp-action@master
       #   with:
