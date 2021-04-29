@@ -2,7 +2,7 @@
 
 https://downtimedetector.xyz
 
-It is a simple downtime detector. You can add any URL and the application will ping it every 5 minutes showing the result in the user's dashboard and optionally notifying the user via email if a problem occurs.
+It is a simple downtime detector. A user can add any URL and the application will ping it every 5 minutes showing the result in the user's dashboard and optionally notifying the user via email if a problem occurs.
 
 ## A note about the architecture
 
