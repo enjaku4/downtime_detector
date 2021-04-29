@@ -32,8 +32,6 @@ jobs:
           ruby-version: 2.6.6
           bundler-cache: true
 
-      - run: sudo apt-get -yqq install libpq-dev
-
       - run: bin/rails db:test:prepare
       - run: bin/rspec --format RSpec::Github::Formatter
 
