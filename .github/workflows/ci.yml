@@ -27,20 +27,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 2.6.6
+          bundler-cache: true
 
-      - run: sudo apt-get -yqq install libpq-dev
-      - run: bundle config --local path vendor/bundle
-
-      - uses: actions/cache@v2
-        with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-ruby-gems-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: ${{ runner.os }}-ruby-gems-
-
-      - run: bundle
       - run: bin/rails db:test:prepare
       - run: bin/rspec --format RSpec::Github::Formatter
 
