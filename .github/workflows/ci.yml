@@ -24,11 +24,11 @@ jobs:
           push: true
           cache-from: type=registry,ref=enjaku/downtime_detector:latest
           cache-to: type=inline
-          build-args:
-            - RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
-          tags:
-            - enjaku/downtime_detector:${{ github.sha }}
-            - enjaku/downtime_detector:latest
+          build-args: |
+            RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
+          tags: |
+            enjaku/downtime_detector:${{ github.sha }}
+            enjaku/downtime_detector:latest
 
   # test:
   #   runs-on: ubuntu-latest
