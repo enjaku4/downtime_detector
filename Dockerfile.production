@@ -1,0 +1,16 @@
+FROM ruby:2.6.6
+
+RUN apt-get update -qq && apt-get install -y nodejs postgresql-client nano
+
+ARG RAILS_MASTER_KEY
+
+ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
+ENV REDIS_URL=redis://redis:6379/0
+
+RUN mkdir /downtime_detector
+WORKDIR /downtime_detector
+
+COPY . ./
+
+RUN bundle install --without development
+RUN bundle exec rails assets:precompile
