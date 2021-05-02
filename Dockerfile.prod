@@ -7,7 +7,6 @@ ARG RAILS_MASTER_KEY
 ENV BUNDLE_PATH=/bundle/vendor
 ENV RAILS_ENV=production
 ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
-ENV DATABASE_HOST=db
 ENV REDIS_URL=redis://redis:6379/0
 
 RUN mkdir /downtime_detector
