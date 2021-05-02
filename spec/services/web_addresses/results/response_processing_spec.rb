@@ -1,8 +1,8 @@
 require 'rails_helper'
-require 'interactions/web_addresses/results/base_processing_interaction'
+require 'services/web_addresses/results/base_processing'
 
-describe WebAddresses::Results::ResponseProcessingInteraction do
-  subject { described_class.run!(web_address: web_address, response: response) }
+describe WebAddresses::Results::ResponseProcessing do
+  subject { described_class.new(web_address, response: response).run }
 
   let(:web_address) { create(:web_address, http_status_code: nil, status: :unknown) }
 

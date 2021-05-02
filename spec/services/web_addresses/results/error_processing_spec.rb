@@ -1,8 +1,8 @@
 require 'rails_helper'
-require 'interactions/web_addresses/results/base_processing_interaction'
+require 'services/web_addresses/results/base_processing'
 
-describe WebAddresses::Results::ErrorProcessingInteraction do
-  subject { described_class.run!(web_address: web_address, exception: Faraday::TimeoutError.new) }
+describe WebAddresses::Results::ErrorProcessing do
+  subject { described_class.new(web_address, exception: Faraday::TimeoutError.new).run }
 
   let(:web_address) { create(:web_address, http_status_code: 200, status: :up) }
 
