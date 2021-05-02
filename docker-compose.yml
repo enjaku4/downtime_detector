@@ -7,6 +7,7 @@ services:
     image: downtime_detector
     volumes:
       - .:/downtime_detector
+      - bundle_cache:/usr/local/bundle
     depends_on:
       - db
       - redis
@@ -14,16 +15,17 @@ services:
       - '3000:3000'
     stdin_open: true
     tty: true
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    command: bash -c "bundle && rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
 
   sidekiq:
     image: downtime_detector
     volumes:
       - .:/downtime_detector
+      - bundle_cache:/usr/local/bundle
     depends_on:
       - db
       - redis
-    command: bundle exec sidekiq
+    command: bash -c "wait-for-it web:3000 --timeout=0 && bundle exec sidekiq"
 
   db:
     image: postgres:12.2
@@ -38,3 +40,6 @@ services:
     image: redis:6.0.1
     volumes:
       - ./tmp/redis:/data
+
+volumes:
+  bundle_cache:
