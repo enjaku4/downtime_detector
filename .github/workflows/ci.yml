@@ -64,33 +64,32 @@ jobs:
             enjaku/downtime_detector:${{ github.sha }}
             enjaku/downtime_detector:latest
 
+  deploy:
+    runs-on: ubuntu-latest
 
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #
-  #   needs: test
-  #
-  #   if: github.ref == 'refs/heads/master'
-  #
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #
-  #     - uses: appleboy/scp-action@master
-  #       with:
-  #         host: 161.35.92.31
-  #         username: enjaku
-  #         key: ${{ secrets.SSH_PRIVATE_KEY }}
-  #         source: ./docker-compose.prod.yml
-  #         target: /home/enjaku/apps/downtime_detector
-  #
-  #     - uses: appleboy/ssh-action@master
-  #       with:
-  #         host: 161.35.92.31
-  #         username: enjaku
-  #         key: ${{ secrets.SSH_PRIVATE_KEY}}
-  #         script: |
-  #           docker pull enjaku/downtime_detector:latest
-  #           docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.prod.yml run --rm web bin/rails db:migrate
-  #           docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.prod.yml stop -t 30 sidekiq
-  #           docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.prod.yml up -d web
-  #           docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.prod.yml up -d sidekiq
+    needs: test
+
+    # if: github.ref == 'refs/heads/master'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: appleboy/scp-action@master
+        with:
+          host: 161.35.92.31
+          username: enjaku
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: docker-compose.production.yml
+          target: /home/enjaku/apps/downtime_detector
+
+      - uses: appleboy/ssh-action@master
+        with:
+          host: 161.35.92.31
+          username: enjaku
+          key: ${{ secrets.SSH_PRIVATE_KEY}}
+          script: |
+            docker pull enjaku/downtime_detector:latest
+            docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.production.yml run --rm web bin/rails db:migrate
+            docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.production.yml stop -t 30 sidekiq
+            docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.production.yml up -d web
+            docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.production.yml up -d sidekiq
