@@ -3,13 +3,11 @@ version: '3'
 services:
 
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
+    build: .
     image: downtime_detector
     volumes:
       - .:/downtime_detector
-      - bundle_cache:/bundle
+      - bundle_cache:/usr/local/bundle
     depends_on:
       - db
       - redis
@@ -23,7 +21,7 @@ services:
     image: downtime_detector
     volumes:
       - .:/downtime_detector
-      - bundle_cache:/bundle
+      - bundle_cache:/usr/local/bundle
     depends_on:
       - db
       - redis

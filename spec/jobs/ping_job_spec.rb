@@ -13,8 +13,8 @@ describe WebAddresses::PingJob, type: :job do
     before { allow(Faraday).to receive(:get).with(web_address.url).and_return(faraday_response_double) }
 
     it 'processes the response' do
-      expect(WebAddresses::Results::ResponseProcessingInteraction).to receive(:run!)
-        .with(web_address: web_address, response: faraday_response_double)
+      expect(WebAddresses::Results::ResponseProcessing).to receive_message_chain(:new, :run)
+        .with(web_address, response: faraday_response_double).with(no_args)
       subject
     end
   end
@@ -23,8 +23,8 @@ describe WebAddresses::PingJob, type: :job do
     before { allow(Faraday).to receive(:get).with(web_address.url).and_raise(Faraday::TimeoutError) }
 
     it 'processes the error' do
-      expect(WebAddresses::Results::ErrorProcessingInteraction).to receive(:run!)
-        .with(web_address: web_address, exception: instance_of(Faraday::TimeoutError))
+      expect(WebAddresses::Results::ErrorProcessing).to receive_message_chain(:new, :run)
+        .with(web_address, exception: instance_of(Faraday::TimeoutError)).with(no_args)
       subject
     end
   end

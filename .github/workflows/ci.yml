@@ -13,7 +13,7 @@ jobs:
       RAILS_ENV: test
       RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
       DATABASE_HOST: localhost
-      DISABLE_SPRING: 1
+      BUNDLE_WITHOUT: 'development'
 
     services:
       db:
@@ -32,8 +32,8 @@ jobs:
           ruby-version: 2.6.6
           bundler-cache: true
 
-      - run: bin/rails db:test:prepare
-      - run: bin/rspec --format RSpec::Github::Formatter
+      - run: bundle exec rails db:test:prepare
+      - run: bundle exec rspec --format RSpec::Github::Formatter
 
   build:
     runs-on: ubuntu-latest
@@ -54,8 +54,7 @@ jobs:
 
       - uses: docker/build-push-action@v2
         with:
-          context: .
-          file: ./Dockerfile.prod
+          file: Dockerfile.production
           push: true
           cache-from: type=registry,ref=enjaku/downtime_detector:latest
           cache-to: type=inline
@@ -80,7 +79,7 @@ jobs:
           host: 161.35.92.31
           username: enjaku
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: ./docker-compose.prod.yml
+          source: docker-compose.production.yml
           target: /home/enjaku/apps/downtime_detector
 
       - uses: appleboy/ssh-action@master
@@ -90,7 +89,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY}}
           script: |
             docker pull enjaku/downtime_detector:latest
-            docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.prod.yml run --rm web bin/rails db:migrate
-            docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.prod.yml stop -t 30 sidekiq
-            docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.prod.yml up -d web
-            docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.prod.yml up -d sidekiq
+            docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.production.yml run --rm web bin/rails db:migrate
+            docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.production.yml stop -t 30 sidekiq
+            docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.production.yml up -d web
+            docker-compose -f /home/enjaku/apps/downtime_detector/docker-compose.production.yml up -d sidekiq
