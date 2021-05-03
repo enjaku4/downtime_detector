@@ -11,7 +11,11 @@ ENV REDIS_URL=redis://redis:6379/0
 RUN mkdir /downtime_detector
 WORKDIR /downtime_detector
 
-COPY . ./
+COPY Gemfile ./
+COPY Gemfile.lock ./
 
 RUN bundle install --without development test
+
+COPY . ./
+
 RUN bundle exec rails assets:precompile
