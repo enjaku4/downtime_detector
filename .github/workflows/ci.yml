@@ -54,7 +54,7 @@ jobs:
 
       - uses: docker/build-push-action@v2
         with:
-          file: ./Dockerfile.production
+          file: Dockerfile.production
           push: true
           cache-from: type=registry,ref=enjaku/downtime_detector:latest
           cache-to: type=inline
