@@ -67,7 +67,7 @@ Rails.application.configure do
     user_name: Rails.application.credentials.ses[:smtp][:user_name],
     password: Rails.application.credentials.ses[:smtp][:password],
     address: 'email-smtp.eu-west-3.amazonaws.com',
-    port: '25',
+    port: '587',
     authentication: :login,
     enable_starttls_auto: true
   }
