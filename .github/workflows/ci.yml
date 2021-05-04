@@ -99,5 +99,10 @@ jobs:
             docker-compose -f /home/ubuntu/apps/downtime_detector/docker-compose.production.yml up -d sidekiq
             docker image prune -f
 
-      - run: |
-        curl -X POST -H "Content-Type: application/json" -d '{"environment":"production","repository":"https://github.com/enjaku4/downtime_detector","revision":"${{ github.sha }}"}' "https://airbrake.io/api/v4/projects/${{ secrets.AIRBRAKE_PROJECT_ID }}/deploys?key=${{ secrets.AIRBRAKE_PROJECT_KEY }}"
+      - shell: bash
+        env:
+          REVISION: ${{ secrets.SuperSecret }}
+          AIRBRAKE_PROJECT_ID: ${{ secrets.AIRBRAKE_PROJECT_ID }}
+          AIRBRAKE_PROJECT_KEY: ${{ secrets.AIRBRAKE_PROJECT_KEY }}
+        run: |
+          curl -X POST -H "Content-Type: application/json" -d '{"environment":"production","repository":"https://github.com/enjaku4/downtime_detector","revision":"$REVISION"}' "https://airbrake.io/api/v4/projects/$AIRBRAKE_PROJECT_ID/deploys?key=$AIRBRAKE_PROJECT_KEY"
