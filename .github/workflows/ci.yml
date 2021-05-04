@@ -89,7 +89,7 @@ jobs:
         with:
           host: 15.188.227.131
           username: ubuntu
-          key: ${{ secrets.SSH_PRIVATE_KEY}}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             $(aws ecr get-login --no-include-email --region eu-west-3)
             docker pull 242470175046.dkr.ecr.eu-west-3.amazonaws.com/downtime_detector:latest
@@ -98,3 +98,6 @@ jobs:
             docker-compose -f /home/ubuntu/apps/downtime_detector/docker-compose.production.yml up -d web
             docker-compose -f /home/ubuntu/apps/downtime_detector/docker-compose.production.yml up -d sidekiq
             docker image prune -f
+
+      - run: |
+        curl -X POST -H "Content-Type: application/json" -d '{"environment":"production","repository":"https://github.com/enjaku4/downtime_detector","revision":"${{ github.sha }}"}' "https://airbrake.io/api/v4/projects/${{ secrets.AIRBRAKE_PROJECT_ID }}/deploys?key=${{ secrets.AIRBRAKE_PROJECT_KEY }}"
