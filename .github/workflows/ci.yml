@@ -91,9 +91,12 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY}}
           script: |
+            $(aws ecr get-login --no-include-email --region eu-west-3)
             docker pull 242470175046.dkr.ecr.eu-west-3.amazonaws.com/downtime_detector:latest
             docker-compose -f /home/ubuntu/apps/downtime_detector/docker-compose.production.yml run --rm web bin/rails db:migrate
             docker-compose -f /home/ubuntu/apps/downtime_detector/docker-compose.production.yml stop -t 30 sidekiq
             docker-compose -f /home/ubuntu/apps/downtime_detector/docker-compose.production.yml up -d web
             docker-compose -f /home/ubuntu/apps/downtime_detector/docker-compose.production.yml up -d sidekiq
             docker image prune -f
+
+      # TODO send signal to airbrake
