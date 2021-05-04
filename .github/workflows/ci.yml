@@ -105,4 +105,4 @@ jobs:
           AIRBRAKE_PROJECT_ID: ${{ secrets.AIRBRAKE_PROJECT_ID }}
           AIRBRAKE_PROJECT_KEY: ${{ secrets.AIRBRAKE_PROJECT_KEY }}
         run: |
-          curl -X POST -H "Content-Type: application/json" -d '{"environment":"production","repository":"https://github.com/enjaku4/downtime_detector","revision":"$REVISION"}' "https://airbrake.io/api/v4/projects/$AIRBRAKE_PROJECT_ID/deploys?key=$AIRBRAKE_PROJECT_KEY"
+          curl -X POST -H "Content-Type: application/json" -d '{"environment":"production","repository":"https://github.com/enjaku4/downtime_detector","revision":"'$REVISION'"}' "https://airbrake.io/api/v4/projects/$AIRBRAKE_PROJECT_ID/deploys?key=$AIRBRAKE_PROJECT_KEY"
