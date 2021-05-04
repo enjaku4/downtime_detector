@@ -3,7 +3,7 @@ version: '3'
 services:
 
   web:
-    image: enjaku/downtime_detector:latest
+    image: 242470175046.dkr.ecr.eu-west-3.amazonaws.com/downtime_detector:latest
     depends_on:
       - db
       - redis
@@ -13,7 +13,7 @@ services:
     restart: always
 
   sidekiq:
-    image: enjaku/downtime_detector:latest
+    image: 242470175046.dkr.ecr.eu-west-3.amazonaws.com/downtime_detector:latest
     depends_on:
       - db
       - redis
