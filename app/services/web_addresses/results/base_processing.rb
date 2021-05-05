@@ -21,7 +21,7 @@ module WebAddresses
       private
 
         def post_initialize(args)
-          nil
+          raise NotImplementedError
         end
 
         def set_web_address_status
