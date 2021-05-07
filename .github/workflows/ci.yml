@@ -13,7 +13,7 @@ jobs:
       RAILS_ENV: test
       RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
       DATABASE_HOST: localhost
-      BUNDLE_WITHOUT: 'development'
+      BUNDLE_WITHOUT: development
 
     services:
       db:

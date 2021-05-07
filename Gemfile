@@ -28,13 +28,13 @@ group :development do
   gem 'web-console', '>= 3.3.0'
   gem 'spring'
   gem 'annotate'
+  gem 'spring-commands-rspec'
 end
 
 group :test do
   gem 'rspec-rails', '~> 3.9'
   gem 'factory_bot_rails'
   gem 'database_cleaner-active_record'
-  gem 'spring-commands-rspec'
   gem 'rails-controller-testing'
   gem 'rspec-github', require: false
 end
