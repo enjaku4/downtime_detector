@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-
+  # TODO use Dockerfile.development
   web:
     build: .
     image: downtime_detector
