@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+  web:
+    build: .
+    image: downtime_detector_hanami
+    volumes:
+      - .:/usr/src/downtime_detector
+      - bundle_cache:/usr/local/bundle
+    depends_on:
+      - db
+    ports:
+      - '2300:2300'
+    stdin_open: true
+    tty: true
+    command: bash -c 'bundle && bundle exec hanami server'
+
+  db:
+    image: postgres:12.6
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      - 'POSTGRES_HOST_AUTH_METHOD=trust'
+    ports:
+      - '5432:5432'
+
+volumes:
+  bundle_cache:
