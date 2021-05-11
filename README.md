@@ -1,33 +1,9 @@
-# Downtime Detector Hanami
+# Downtime Detector
 
-Welcome to your new Hanami project!
+https://downtimedetector.xyz
 
-## Setup
+It is a simple downtime detector. A user can add any URL and the application will ping it every 5 minutes showing the result in the user's dashboard and optionally notifying the user via email if a problem occurs.
 
-How to run tests:
+## A note about the architecture
 
-```
-% bundle exec rake
-```
-
-How to run the development console:
-
-```
-% bundle exec hanami console
-```
-
-How to run the development server:
-
-```
-% bundle exec hanami server
-```
-
-How to prepare (create and migrate) DB for `development` and `test` environments:
-
-```
-% bundle exec hanami db prepare
-
-% HANAMI_ENV=test bundle exec hanami db prepare
-```
-
-Explore Hanami [guides](https://guides.hanamirb.org/), [API docs](http://docs.hanamirb.org/1.3.4/), or jump in [chat](http://chat.hanamirb.org) for help. Enjoy! 🌸
+I'm developing the application using [Hanami web framework](https://github.com/hanami/hanami) which helps me a lot in keeping my architecture clean.
