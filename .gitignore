@@ -1,0 +1,9 @@
+/public/assets*
+/tmp
+.env.local
+.env.*.local
+
+.DS_store
+.tags
+.tags_swap
+.ctags

@@ -1,0 +1,2 @@
+module DowntimeDetectorHanami
+end
