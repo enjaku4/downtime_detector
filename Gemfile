@@ -6,8 +6,11 @@ gem 'hanami-model', '~> 1.3'
 
 gem 'pg'
 
+group :plugins do
+  gem 'hanami-reloader', '~> 0.3'
+end
+
 group :development do
-  gem 'shotgun', platforms: :ruby
   gem 'hanami-webconsole'
 end
 
