@@ -4,7 +4,7 @@ module Web
       class Destroy
         include Web::Action
 
-        before :authenticate_user
+        before { authenticate_user }
 
         def call(params)
           sign_out
