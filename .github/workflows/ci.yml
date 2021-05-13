@@ -11,6 +11,7 @@ jobs:
 
     env:
       BUNDLE_WITHOUT: development
+      DATABASE_URL: "postgresql://postgres@localhost/downtime_detector_hanami_test"
       HANAMI_ENV: test
 
     services:
