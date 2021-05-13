@@ -33,8 +33,8 @@ RSpec.describe Web::Controllers::Session::Create do
     end
 
     it 'signs user in' do
-      expect(action).to receive(:sign_in).with(user)
       subject
+      expect(action.exposures[:session][:user_id]).to eq(user.id)
     end
 
     it 'does not show any flash messages' do
@@ -54,8 +54,8 @@ RSpec.describe Web::Controllers::Session::Create do
     end
 
     it 'doesn not sign user in' do
-      expect(action).not_to receive(:sign_in)
       subject
+      expect(action.exposures[:session][:user_id]).to be_nil
     end
 
     it 'shows flash message' do
