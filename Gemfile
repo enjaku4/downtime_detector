@@ -25,6 +25,7 @@ group :test do
   gem 'rspec'
   gem 'hanami-fabrication'
   gem 'database_cleaner-sequel'
+  gem 'rspec-github', require: false
 end
 
 group :production do
