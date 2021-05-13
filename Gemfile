@@ -23,6 +23,7 @@ end
 
 group :test do
   gem 'rspec'
+  gem 'hanami-fabrication'
   gem 'database_cleaner-sequel'
 end
 
