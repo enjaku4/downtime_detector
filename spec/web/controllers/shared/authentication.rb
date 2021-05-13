@@ -13,7 +13,6 @@ shared_examples_for 'user authentication' do
 
   it 'shows flash message' do
     subject
-    flash = action.exposures[:flash]
     expect(action.exposures[:flash][:warning]).to eq('you have to sign in to your account first')
   end
 end

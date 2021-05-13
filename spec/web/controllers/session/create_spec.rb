@@ -1,6 +1,9 @@
 require_relative '../../../../apps/web/controllers/session/create'
+require_relative '../shared/recaptcha_validation'
 
 RSpec.describe Web::Controllers::Session::Create do
+  it_behaves_like 'recaptcha validation', 'sign_in/sign_up'
+
   subject { action.call({ 'g-recaptcha-response-data' => { 'sign_in/sign_up' => 'foo' }, session: session_params }) }
 
   let(:action) { described_class.new }
@@ -9,12 +12,7 @@ RSpec.describe Web::Controllers::Session::Create do
 
   before { allow(Web::Interactors::AuthenticateUser).to receive(:new).with(session_params).and_return(interactor_double) }
 
-  shared_examples_for 'recaptcha validation and redirection to root path' do
-    it 'validates recaptcha' do
-      expect(action).to receive(:validate_recaptcha).with(action: 'sign_in/sign_up')
-      subject
-    end
-
+  shared_examples_for 'redirection to root path' do
     it 'redirects' do
       expect(subject[0]).to eq(302)
     end
@@ -39,11 +37,10 @@ RSpec.describe Web::Controllers::Session::Create do
 
     it 'does not show any flash messages' do
       subject
-      flash = action.exposures[:flash]
       expect(action.exposures[:flash].empty?).to be true
     end
 
-    it_behaves_like 'recaptcha validation and redirection to root path'
+    it_behaves_like 'redirection to root path'
   end
 
   context 'if interaction is unsucsessful' do
@@ -60,10 +57,9 @@ RSpec.describe Web::Controllers::Session::Create do
 
     it 'shows flash message' do
       subject
-      flash = action.exposures[:flash]
       expect(action.exposures[:flash][:danger]).to eq('foo')
     end
 
-    it_behaves_like 'recaptcha validation and redirection to root path'
+    it_behaves_like 'redirection to root path'
   end
 end

@@ -16,7 +16,7 @@ module Web
 
           unless verify_recaptcha(options)
             flash[:danger] = 'recaptcha is invalid'
-            redirect_to request.referer
+            redirect_to request.referer || routes.root_path
           end
         end
     end

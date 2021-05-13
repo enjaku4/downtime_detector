@@ -2,11 +2,11 @@ require_relative '../../../../apps/web/controllers/session/destroy'
 require_relative '../shared/authentication'
 
 RSpec.describe Web::Controllers::Session::Destroy do
+  it_behaves_like 'user authentication'
+
   subject { action.call({ 'rack.session' => { user_id: Fabricate(:user).id } }) }
 
   let(:action) { described_class.new }
-
-  it_behaves_like 'user authentication'
 
   it 'signs user out' do
     subject
