@@ -12,7 +12,7 @@ module Web
       expose :user
 
       def call
-        @user = UserRepository.new.first_by_nickname(@validation.output[:nickname])
+        @user = UserRepository.new.find_by_nickname(@validation.output[:nickname])
 
         if @user
           error!('password is incorrect') unless @user.password_correct?(@validation.output[:password])
