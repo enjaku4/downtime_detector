@@ -4,8 +4,32 @@ html
 
   head
     meta charset='UTF-8'
+    meta name='viewport' content='width=device-width, initial-scale=1'
+
     title Downtime Detector
+
     = favicon
 
+    = stylesheet 'bootstrap.min'
+
+    = javascript 'jquery-3.6.0.min'
+    = javascript 'bootstrap.bundle.min'
+
   body
-    = yield
+    nav.navbar.navbar-dark.bg-dark
+      = link_to 'Downtime Detector', routes.root_path, class: 'navbar-brand'
+
+      - if current_user
+        .navbar-text.py-0.d-flex.align-items-center
+          b.mr-3 = current_user.nickname
+          = form_for :sign_out, routes.session_path, method: :delete do
+            = submit 'sign out', class: 'btn btn-sm btn-danger'
+
+    .container.mt-5
+
+      = yield
+
+      footer.mt-5.row: .col.text-center
+        p
+          ' &copy; #{DateTime.now.year}
+          = link_to 'enjaku4', 'https://github.com/enjaku4', target: '_blank'

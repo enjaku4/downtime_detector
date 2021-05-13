@@ -7,3 +7,5 @@
 .tags
 .tags_swap
 .ctags
+
+.byebug_history
