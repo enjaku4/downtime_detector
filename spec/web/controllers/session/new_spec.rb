@@ -1,5 +1,3 @@
-require_relative '../../../../apps/web/controllers/session/new'
-
 RSpec.describe Web::Controllers::Session::New do
   subject { described_class.new.call({ 'rack.session' => { user_id: user_id } }) }
 

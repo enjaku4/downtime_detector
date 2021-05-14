@@ -5,8 +5,8 @@ module Web
     class AuthenticateUser
       include Hanami::Interactor
 
-      def initialize(params)
-        @validation = Validators::UserAuthenticationValidator.new(params).validate
+      def initialize(nickname:, password:)
+        @validation = Validators::UserAuthenticationValidator.new(nickname: nickname, password: password).validate
       end
 
       expose :user

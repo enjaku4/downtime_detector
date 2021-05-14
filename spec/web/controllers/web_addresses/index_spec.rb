@@ -1,4 +1,3 @@
-require_relative '../../../../apps/web/controllers/web_addresses/index'
 require_relative '../shared/authentication'
 
 RSpec.describe Web::Controllers::WebAddresses::Index do

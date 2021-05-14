@@ -1,4 +1,3 @@
-require_relative '../../../../apps/web/controllers/session/create'
 require_relative '../shared/recaptcha_validation'
 
 RSpec.describe Web::Controllers::Session::Create do
@@ -8,9 +7,9 @@ RSpec.describe Web::Controllers::Session::Create do
 
   let(:action) { described_class.new }
   let(:session_params) { { nickname: 'foo', password: 'bar' } }
-  let(:interactor_double) { Web::Interactors::AuthenticateUser.new(session_params) }
+  let(:interactor) { Web::Interactors::AuthenticateUser.new(session_params) }
 
-  before { allow(Web::Interactors::AuthenticateUser).to receive(:new).with(session_params).and_return(interactor_double) }
+  before { allow(Web::Interactors::AuthenticateUser).to receive(:new).with(session_params).and_return(interactor) }
 
   shared_examples_for 'redirection to root path' do
     it 'redirects' do
@@ -27,7 +26,7 @@ RSpec.describe Web::Controllers::Session::Create do
 
     before do
       interactor_result = Hanami::Interactor::Result.new(user: user)
-      allow(interactor_double).to receive(:call).and_return(interactor_result)
+      allow(interactor).to receive(:call).and_return(interactor_result)
     end
 
     it 'signs user in' do
@@ -47,7 +46,7 @@ RSpec.describe Web::Controllers::Session::Create do
     before do
       interactor_result = Hanami::Interactor::Result.new
       interactor_result.add_error('foo')
-      allow(interactor_double).to receive(:call).and_return(interactor_result)
+      allow(interactor).to receive(:call).and_return(interactor_result)
     end
 
     it 'doesn not sign user in' do

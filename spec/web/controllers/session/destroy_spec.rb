@@ -1,4 +1,3 @@
-require_relative '../../../../apps/web/controllers/session/destroy'
 require_relative '../shared/authentication'
 
 RSpec.describe Web::Controllers::Session::Destroy do
