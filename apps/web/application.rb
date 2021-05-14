@@ -19,6 +19,9 @@ module Web
       # When you add new directories, remember to add them here.
       #
       load_paths << [
+        'helpers',
+        'validators',
+        'interactors',
         'controllers',
         'views'
       ]
@@ -73,7 +76,7 @@ module Web
       #
       # cookies true
       # or
-      # cookies max_age: 300
+      cookies max_age: 300
 
       # Enable sessions
       # Argument: Symbol the Rack session adapter
@@ -225,15 +228,14 @@ module Web
         frame-ancestors 'self';
         base-uri 'self';
         default-src 'none';
-        script-src 'self';
+        script-src 'self' 'unsafe-inline' https://www.recaptcha.net https://www.gstatic.com;
         connect-src 'self';
         img-src 'self' https: data:;
         style-src 'self' 'unsafe-inline' https:;
         font-src 'self';
         object-src 'none';
-        plugin-types application/pdf;
         child-src 'self';
-        frame-src 'self';
+        frame-src 'self' https://www.recaptcha.net;
         media-src 'self'
       }
 
@@ -248,6 +250,7 @@ module Web
       controller.prepare do
         # include MyAuthentication # included in all the actions
         # before :authenticate!    # run an authentication before callback
+        include Web::Controllers::Authentication
       end
 
       # Configure the code that will yield each time Web::View is included

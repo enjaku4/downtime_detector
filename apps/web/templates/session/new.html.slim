@@ -1,0 +1,9 @@
+.row
+  .col-12.col-md-8.offset-md-2.text-center
+    h3 Downtime Detector
+    p It is a simple downtime detector. You can add any URL and the application will ping it every 5 minutes showing the result in the user's dashboard and optionally notifying you via email if a problem occurs.
+
+.row
+  .col-12.col-md-6.offset-md-3.text-center
+    = render partial: 'shared/flash_messages', locals: { flash: flash }
+    = session_form
