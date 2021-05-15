@@ -107,7 +107,7 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 CREATE TABLE public.web_addresses (
     id integer NOT NULL,
     http_status_code integer,
-    notifications_sent boolean NOT NULL,
+    notifications_sent boolean DEFAULT false NOT NULL,
     pinged_at timestamp without time zone,
     status public.web_address_statuses DEFAULT 'unknown'::public.web_address_statuses NOT NULL,
     url text NOT NULL,
