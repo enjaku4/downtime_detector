@@ -5,7 +5,7 @@ module Web
         include Web::View
         include Helpers::RecaptchaFormHelper
 
-        def session_form
+        def new_session_form
           form_for :session, routes.session_path do
             div recaptcha_for(action: 'sign_in/sign_up')
             div(class: 'form-group') do
