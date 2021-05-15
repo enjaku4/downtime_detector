@@ -6,25 +6,27 @@ module Web
       include Hanami::Interactor
 
       def initialize(nickname:, password:)
-        @validation = Validators::UserAuthenticationValidator.new(nickname: nickname, password: password).validate
+        @nickname = nickname
+        @password = password
       end
 
       expose :user
 
       def call
-        @user = UserRepository.new.find_by_nickname(@validation.output[:nickname])
+        @user = UserRepository.new.find_by_nickname(@nickname)
 
         if @user
-          error!('password is incorrect') unless @user.password_correct?(@validation.output[:password])
+          error!('password is incorrect') unless @user.password_correct?(@password)
         else
-          @user = User.create(@validation.output)
+          @user = User.create(nickname: @nickname, password: @password)
         end
       end
 
       private
 
         def valid?
-          @validation.success? || error(@validation.messages(full: true).values.join(', '))
+          validation = Validators::UserAuthenticationValidator.new(nickname: @nickname, password: @password).validate
+          validation.success? || error(validation.messages(full: true).values.join(', '))
         end
     end
   end
