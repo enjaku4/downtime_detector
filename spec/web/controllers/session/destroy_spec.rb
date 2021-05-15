@@ -1,6 +1,6 @@
 require_relative '../shared/authentication'
 
-RSpec.describe Web::Controllers::Session::Destroy do
+RSpec.describe Web::Controllers::Session::Destroy, type: :action do
   it_behaves_like 'user authentication'
 
   subject { action.call({ 'rack.session' => { user_id: Fabricate(:user).id } }) }

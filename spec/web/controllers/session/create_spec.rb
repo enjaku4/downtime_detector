@@ -1,6 +1,6 @@
 require_relative '../shared/recaptcha_validation'
 
-RSpec.describe Web::Controllers::Session::Create do
+RSpec.describe Web::Controllers::Session::Create, type: :action do
   it_behaves_like 'recaptcha validation', 'sign_in/sign_up'
 
   subject { action.call({ 'g-recaptcha-response-data' => { 'sign_in/sign_up' => 'foo' }, session: session_params }) }
