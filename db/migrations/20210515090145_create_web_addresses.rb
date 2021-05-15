@@ -7,7 +7,7 @@ Hanami::Model.migration do
       primary_key :id
 
       column :http_status_code, Integer
-      column :notifications_sent, FalseClass, null: false
+      column :notifications_sent, FalseClass, default: false, null: false
       column :pinged_at, DateTime
       column :status, 'web_address_statuses', default: 'unknown', null: false
       column :url, String, null: false
