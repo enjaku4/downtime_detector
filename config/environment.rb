@@ -37,6 +37,8 @@ Hanami.configure do
   environment :development do
     # See: https://guides.hanamirb.org/projects/logging
     logger level: :debug
+
+    BetterErrors::Middleware.allow_ip!('0.0.0.0/0')
   end
 
   environment :production do
