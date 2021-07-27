@@ -7,6 +7,7 @@ gem 'slim'
 gem 'pg'
 gem 'bcrypt'
 gem 'recaptcha'
+gem 'puma'
 
 group :plugins do
   gem 'hanami-reloader', '~> 0.3'
@@ -26,8 +27,4 @@ group :test do
   gem 'hanami-fabrication'
   gem 'database_cleaner-sequel'
   gem 'rspec-github', require: false
-end
-
-group :production do
-  # gem 'puma'
 end
