@@ -16,6 +16,7 @@ end
 group :development do
   gem 'byebug'
   gem 'hanami-webconsole'
+  gem 'pry'
 end
 
 group :test, :development do
