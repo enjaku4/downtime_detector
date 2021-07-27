@@ -1,4 +1,4 @@
-RSpec.describe Web::Interactors::AuthenticateUser do
+RSpec.describe Auth::AuthenticateUser do
   subject { described_class.new(args).call }
 
   context 'if validation is unsuccessful' do
@@ -9,7 +9,7 @@ RSpec.describe Web::Interactors::AuthenticateUser do
     end
 
     it 'has errors' do
-      expect(subject.errors).to eq ['nickname size cannot be less than 6, password size cannot be less than 6']
+      expect(subject.errors).to contain_exactly('password size cannot be less than 6')
     end
 
     it 'does not return user' do
@@ -17,8 +17,7 @@ RSpec.describe Web::Interactors::AuthenticateUser do
     end
 
     it 'does not create any users' do
-      subject
-      expect(UserRepository.new.last).to be_nil
+      expect { subject }.not_to change { UserRepository.new.last }.from(nil)
     end
   end
 
@@ -39,33 +38,40 @@ RSpec.describe Web::Interactors::AuthenticateUser do
       end
 
       context 'if password is incorrenct' do
-        let(:args) { { nickname: 'foobar', password: 'barbazbad' } }
+        let(:args) { { nickname: 'foobar', password: 'barbaz' } }
 
         it 'is unsuccessful' do
           expect(subject.successful?).to be(false)
         end
 
         it 'has errors' do
-          expect(subject.errors).to eq(['password is incorrect'])
+          expect(subject.errors).to contain_exactly('password is incorrect')
         end
       end
     end
 
     context 'if user does not exist' do
       let(:args) { { nickname: 'barbaz', password: 'bazbad' } }
+      let(:user_repository) { UserRepository.new }
+      let(:user_double) { double }
+
+      before do
+        allow(BCrypt::Password).to receive(:create).with('bazbad').and_return('password_hash')
+        allow(UserRepository).to receive(:new).and_return(user_repository)
+        allow(user_repository).to receive(:create).with(nickname: 'barbaz', password: 'password_hash').and_return(user_double)
+      end
 
       it 'is successful' do
         expect(subject.successful?).to be(true)
       end
 
       it 'is creates a new user' do
-        expect(User).to receive(:create).with(args)
+        expect(user_repository).to receive(:create).with(nickname: 'barbaz', password: 'password_hash')
         subject
       end
 
       it 'returns created user' do
-        expect(subject.user.nickname).to eq('barbaz')
-        expect(subject.user.password_correct?('bazbad')).to be true
+        expect(subject.user).to be user_double
       end
     end
   end

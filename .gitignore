@@ -3,6 +3,8 @@
 .env.local
 .env.*.local
 
+.vscode
+
 .DS_store
 
 .byebug_history

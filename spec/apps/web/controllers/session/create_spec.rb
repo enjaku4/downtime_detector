@@ -7,9 +7,9 @@ RSpec.describe Web::Controllers::Session::Create do
 
   let(:action) { described_class.new }
   let(:session_params) { { nickname: 'foo', password: 'bar' } }
-  let(:interactor) { Web::Interactors::AuthenticateUser.new(session_params) }
+  let(:interactor) { Auth::AuthenticateUser.new(session_params) }
 
-  before { allow(Web::Interactors::AuthenticateUser).to receive(:new).with(session_params).and_return(interactor) }
+  before { allow(Auth::AuthenticateUser).to receive(:new).with(session_params).and_return(interactor) }
 
   shared_examples_for 'redirection to root path' do
     it 'redirects' do
@@ -24,10 +24,7 @@ RSpec.describe Web::Controllers::Session::Create do
   context 'if interaction is successful' do
     let(:user) { Fabricate.build(:user) }
 
-    before do
-      interactor_result = Hanami::Interactor::Result.new(user: user)
-      allow(interactor).to receive(:call).and_return(interactor_result)
-    end
+    before { allow(interactor).to receive(:call).and_return(Hanami::Interactor::Result.new(user: user)) }
 
     it 'signs user in' do
       subject
