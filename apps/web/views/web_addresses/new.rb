@@ -1,3 +1,5 @@
+require_relative '../../../shared/views/recaptcha_form_helper'
+
 module Web
   module Views
     module WebAddresses
