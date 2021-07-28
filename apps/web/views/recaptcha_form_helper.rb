@@ -1,5 +1,5 @@
 module Web
-  module Helpers
+  module Views
     module RecaptchaFormHelper
       include Recaptcha::Adapters::ViewMethods
 

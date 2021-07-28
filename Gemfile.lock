@@ -224,6 +224,7 @@ DEPENDENCIES
   hanami-reloader (~> 0.3)
   hanami-webconsole
   pg
+  pry
   puma
   rake
   recaptcha

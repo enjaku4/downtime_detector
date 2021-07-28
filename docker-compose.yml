@@ -4,7 +4,7 @@ services:
 
   web:
     build: .
-    image: downtime_detector_hanami
+    image: downtime_detector
     volumes:
       - .:/usr/src/downtime_detector
       - bundle_cache:/usr/local/bundle

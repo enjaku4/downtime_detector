@@ -5,10 +5,10 @@ module Web
         include Web::Action
         include RecaptchaValidation
 
-        before { validate_recaptcha(action: 'sign_in/sign_up') }
+        before { validate_recaptcha(action: 'sign_in/sign_up', redirect_path: routes.root_path) }
 
         def call(params)
-          result = Interactors::AuthenticateUser.new(params[:session]).call
+          result = Auth::AuthenticateUser.new(params[:session]).call
 
           if result.successful?
             sign_in(result.user)
