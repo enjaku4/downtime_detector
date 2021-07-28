@@ -4,21 +4,22 @@ module Auth
   class AuthenticateUser
     include Hanami::Interactor
 
-    def initialize(nickname:, password:)
+    def initialize(nickname:, password:, user_repository: UserRepository.new)
       @validation = UserValidator.new(nickname: nickname, password: password).validate
+      @user_repository = user_repository
     end
 
     expose :user
 
     def call
-      @user = UserRepository.new.by_nickname(@validation.output[:nickname])
+      @user = @user_repository.by_nickname(@validation.output[:nickname])
       @user ? check_password_correctness : create_user
     end
 
     private
 
       def valid?
-        @validation.success? || error(@validation.messages(full: true).values.join(', '))
+        @validation.success? || error(@validation.errors(full: true).values.flatten.join(', '))
       end
 
       def check_password_correctness
@@ -27,7 +28,7 @@ module Auth
 
       def create_user
         password_hash = BCrypt::Password.create(@validation.output[:password])
-        @user = UserRepository.new.create(nickname: @validation.output[:nickname], password: password_hash)
+        @user = @user_repository.create(nickname: @validation.output[:nickname], password: password_hash)
       end
   end
 end
