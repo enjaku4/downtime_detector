@@ -1,7 +1,7 @@
 require 'bundler/setup'
 require 'hanami/setup'
 require 'hanami/model'
-require_relative '../lib/downtime_detector_hanami'
+require_relative '../lib/downtime_detector'
 require_relative '../apps/web/application'
 
 Hanami.configure do
@@ -14,9 +14,9 @@ Hanami.configure do
     # Available options:
     #
     #  * SQL adapter
-    #    adapter :sql, 'sqlite://db/downtime_detector_hanami_development.sqlite3'
-    #    adapter :sql, 'postgresql://localhost/downtime_detector_hanami_development'
-    #    adapter :sql, 'mysql://localhost/downtime_detector_hanami_development'
+    #    adapter :sql, 'sqlite://db/downtime_detector_development.sqlite3'
+    #    adapter :sql, 'postgresql://localhost/downtime_detector_development'
+    #    adapter :sql, 'mysql://localhost/downtime_detector_development'
     #
     adapter :sql, ENV.fetch('DATABASE_URL')
 
@@ -28,7 +28,7 @@ Hanami.configure do
   end
 
   mailer do
-    root 'lib/downtime_detector_hanami/mailers'
+    root 'lib/downtime_detector/mailers'
 
     # See https://guides.hanamirb.org/mailers/delivery
     delivery :test
@@ -37,6 +37,8 @@ Hanami.configure do
   environment :development do
     # See: https://guides.hanamirb.org/projects/logging
     logger level: :debug
+
+    BetterErrors::Middleware.allow_ip!('0.0.0.0/0')
   end
 
   environment :production do

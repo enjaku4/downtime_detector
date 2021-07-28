@@ -3,9 +3,8 @@
 .env.local
 .env.*.local
 
+.vscode
+
 .DS_store
-.tags
-.tags_swap
-.ctags
 
 .byebug_history

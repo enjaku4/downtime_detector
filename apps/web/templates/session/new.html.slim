@@ -1,9 +1,18 @@
 .row
   .col-12.col-md-8.offset-md-2.text-center
     h3 Downtime Detector
-    p It is a simple downtime detector. You can add any URL and the application will ping it every 5 minutes showing the result in the user's dashboard and optionally notifying you via email if a problem occurs.
+    p It is a simple downtime detector. You can add a URL and the application will ping it periodically showing the result in the user's dashboard and optionally notifying you if a problem occurs.
 
 .row
   .col-12.col-md-6.offset-md-3.text-center
     = render partial: 'shared/flash_messages', locals: { flash: flash }
-    = new_session_form
+
+    = form_for :session, routes.session_path do
+      - div
+        - recaptcha_for(action: 'sign_in/sign_up')
+      - div class: 'form-group'
+        - text_field :nickname, placeholder: 'nickname', class: 'form-control'
+      - div class: 'form-group'
+        - password_field :password, placeholder: 'password', class: 'form-control'
+      - div
+        - submit 'Sign in / Sign up', class: 'btn btn-primary'

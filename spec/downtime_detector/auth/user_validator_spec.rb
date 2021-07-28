@@ -1,6 +1,6 @@
-require_relative 'shared/validator'
+require_relative '../shared/validator'
 
-RSpec.describe Web::Validators::UserAuthenticationValidator do
+RSpec.describe Auth::UserValidator do
   it_behaves_like 'valid validator', { nickname: 'foobar', password: 'password' }
 
   it_behaves_like 'invalid validator', { nickname: 1 }, :nickname, 'must be a string'

@@ -1,4 +1,4 @@
-shared_examples_for 'recaptcha validation' do |recaptcha_action|
+shared_examples_for 'recaptcha validation' do |recaptcha_action, redirect_path|
   subject { action.call({ 'g-recaptcha-response-data' => { recaptcha_action => 'foo' }}) }
 
   let(:action) { described_class.new }
@@ -17,8 +17,8 @@ shared_examples_for 'recaptcha validation' do |recaptcha_action|
     expect(subject[0]).to eq(302)
   end
 
-  it 'redirects to referer' do
-    expect(subject[1]['location']).to eq(Web.routes.root_path)
+  it 'redirects to redirect path' do
+    expect(subject[1]['location']).to eq(redirect_path)
   end
 
   it 'shows flash message' do

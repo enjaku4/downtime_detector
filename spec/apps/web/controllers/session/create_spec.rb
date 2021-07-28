@@ -1,15 +1,15 @@
 require_relative '../shared/recaptcha_validation'
 
-RSpec.describe Web::Controllers::Session::Create, type: :action do
-  it_behaves_like 'recaptcha validation', 'sign_in/sign_up'
+RSpec.describe Web::Controllers::Session::Create do
+  it_behaves_like 'recaptcha validation', 'sign_in/sign_up', Web.routes.root_path
 
   subject { action.call({ 'g-recaptcha-response-data' => { 'sign_in/sign_up' => 'foo' }, session: session_params }) }
 
   let(:action) { described_class.new }
-  let(:session_params) { { nickname: 'foo', password: 'bar' } }
-  let(:interactor) { Web::Interactors::AuthenticateUser.new(session_params) }
+  let(:session_params) { Hash[nickname: 'foo', password: 'bar'] }
+  let(:interactor) { instance_double(Auth::AuthenticateUser) }
 
-  before { allow(Web::Interactors::AuthenticateUser).to receive(:new).with(session_params).and_return(interactor) }
+  before { allow(Auth::AuthenticateUser).to receive(:new).with(session_params).and_return(interactor) }
 
   shared_examples_for 'redirection to root path' do
     it 'redirects' do
@@ -30,8 +30,8 @@ RSpec.describe Web::Controllers::Session::Create, type: :action do
     end
 
     it 'signs user in' do
+      expect(action).to receive(:sign_in).with(user)
       subject
-      expect(action.exposures[:session][:user_id]).to eq(user.id)
     end
 
     it 'does not show any flash messages' do
@@ -50,8 +50,8 @@ RSpec.describe Web::Controllers::Session::Create, type: :action do
     end
 
     it 'doesn not sign user in' do
+      expect(action).not_to receive(:sign_in)
       subject
-      expect(action.exposures[:session][:user_id]).to be_nil
     end
 
     it 'shows flash message' do
