@@ -4,8 +4,6 @@ module Web
       class New
         include Web::Action
 
-        before { authenticate_user }
-
         def call(params)
         end
       end
