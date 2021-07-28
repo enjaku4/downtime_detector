@@ -1,0 +1,40 @@
+doctype html
+
+html
+
+  head
+    meta charset='UTF-8'
+    meta name='viewport' content='width=device-width, initial-scale=1'
+
+    title Downtime Detector
+
+    = favicon
+
+    = stylesheet 'bootstrap.min'
+
+    = javascript 'jquery-3.6.0.min'
+    = javascript 'bootstrap.bundle.min'
+
+  body
+    nav.navbar.navbar-dark.bg-dark
+      = link_to 'Downtime Detector', routes.root_path, class: 'navbar-brand'
+
+      - if current_user
+        .navbar-text.py-0.d-flex.align-items-center
+          b.mr-3 = current_user.nickname
+          = form_for :sign_out, Auth.routes.session_path, method: :delete do
+            = submit 'sign out', class: 'btn btn-sm btn-danger'
+
+    .container.mt-5
+
+      = yield
+
+      footer.mt-5.row: .col.text-center
+        p
+          ' &copy; #{DateTime.now.year}
+          = link_to 'enjaku4', 'https://github.com/enjaku4', target: '_blank'
+
+    - flash.each do |message_type, message|
+      .alert.alert-dismissible.fade.show.mb-0.w-100.rounded-0.fixed-bottom class="alert-#{message_type}"
+        = message
+        button.close data-dismiss='alert' &times;

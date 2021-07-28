@@ -1,8 +1,10 @@
-module Web
+require_relative '../../../shared/controllers/recaptcha_validation'
+
+module Auth
   module Controllers
     module Session
       class Create
-        include Web::Action
+        include Auth::Action
         include RecaptchaValidation
 
         before { validate_recaptcha(action: 'sign_in/sign_up', redirect_path: routes.root_path) }

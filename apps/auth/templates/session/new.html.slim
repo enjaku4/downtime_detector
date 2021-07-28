@@ -5,14 +5,12 @@
 
 .row
   .col-12.col-md-6.offset-md-3.text-center
-    = render partial: 'shared/flash_messages', locals: { flash: flash }
-
     = form_for :session, routes.session_path do
-      - div
+      - div do
         - recaptcha_for(action: 'sign_in/sign_up')
-      - div class: 'form-group'
+      - div(class: 'form-group') do
         - text_field :nickname, placeholder: 'nickname', class: 'form-control'
-      - div class: 'form-group'
+      - div(class: 'form-group') do
         - password_field :password, placeholder: 'password', class: 'form-control'
-      - div
+      - div do
         - submit 'Sign in / Sign up', class: 'btn btn-primary'

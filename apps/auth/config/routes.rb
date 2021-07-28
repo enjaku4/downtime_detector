@@ -4,4 +4,6 @@
 # Example:
 # get '/hello', to: ->(env) { [200, {}, ['Hello from Hanami!']] }
 
-root to: 'web_addresses#index'
+root to: 'session#new'
+
+resource :session, only: [:create, :destroy]
