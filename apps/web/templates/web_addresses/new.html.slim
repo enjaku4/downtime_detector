@@ -2,4 +2,10 @@
   .col-12.col-md-6.offset-md-3.text-center
     h2.mb-4 Web Address
     = render partial: 'shared/flash_messages', locals: { flash: flash }
-    = new_web_address_form
+    = form_for :web_address, routes.web_addresses_path do
+      - div
+        - recaptcha_for(action: 'create_web_address')
+      - div class: 'form-group'
+        - text_field :url, placeholder: 'https://www.example.com', class: 'form-control'
+      - div
+        - submit 'Add', class: 'btn btn-primary'

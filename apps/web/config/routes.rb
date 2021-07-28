@@ -7,4 +7,4 @@
 root to: 'session#new'
 
 resource :session, only: [:create, :destroy]
-resources :web_addresses, only: [:index, :new, :create]
+resources :web_addresses, except: [:edit, :update]
