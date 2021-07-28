@@ -1,8 +1,8 @@
-module Web
+module Auth
   module Controllers
     module Session
       class Destroy
-        include Web::Action
+        include Auth::Action
 
         before { authenticate_user }
 

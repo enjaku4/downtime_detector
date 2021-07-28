@@ -8,11 +8,6 @@ shared_examples_for 'user authentication' do
   end
 
   it 'redirects to root path' do
-    expect(subject[1]['location']).to eq(Web.routes.root_path)
-  end
-
-  it 'shows flash message' do
-    subject
-    expect(action.exposures[:flash][:warning]).to eq('you have to sign in to your account first')
+    expect(subject[1]['location']).to eq(Auth.routes.root_path)
   end
 end

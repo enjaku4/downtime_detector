@@ -3,8 +3,10 @@ require 'hanami/setup'
 require 'hanami/model'
 require_relative '../lib/downtime_detector'
 require_relative '../apps/web/application'
+require_relative '../apps/auth/application'
 
 Hanami.configure do
+  mount Auth::Application, at: '/auth'
   mount Web::Application, at: '/'
 
   model do
