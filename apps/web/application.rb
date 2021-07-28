@@ -250,7 +250,7 @@ module Web
         # before :authenticate!    # run an authentication before callback
         include Authentication
 
-        before :authenticate_user
+        before { authenticate_user }
       end
 
       # Configure the code that will yield each time Web::View is included
