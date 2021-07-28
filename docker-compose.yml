@@ -17,7 +17,7 @@ services:
     command: bash -c 'bundle && bundle exec hanami server'
 
   db:
-    image: postgres:11.11
+    image: postgres:12.6
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
     environment:

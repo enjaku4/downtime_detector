@@ -1,6 +1,6 @@
 require_relative '../shared/authentication'
 
-RSpec.describe Web::Controllers::WebAddresses::Index, type: :action do
+RSpec.describe Web::Controllers::WebAddresses::Index do
   it_behaves_like 'user authentication'
 
   subject { described_class.new.call({ 'rack.session' => { user_id: Fabricate(:user).id } }) }

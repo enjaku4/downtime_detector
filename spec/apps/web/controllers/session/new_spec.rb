@@ -1,4 +1,4 @@
-RSpec.describe Web::Controllers::Session::New, type: :action do
+RSpec.describe Web::Controllers::Session::New do
   subject { described_class.new.call({ 'rack.session' => { user_id: user_id } }) }
 
   context 'if user was signed in' do
