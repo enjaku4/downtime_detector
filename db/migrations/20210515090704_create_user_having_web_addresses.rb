@@ -11,6 +11,8 @@ Hanami::Model.migration do
 
       index :user_id
       index :web_address_id
+
+      index [:user_id, :web_address_id], unique: true
     end
   end
 end

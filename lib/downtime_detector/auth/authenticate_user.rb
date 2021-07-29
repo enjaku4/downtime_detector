@@ -12,7 +12,7 @@ module Auth
     expose :user
 
     def call
-      @user = @user_repository.by_nickname(@validation.output[:nickname])
+      @user = @user_repository.find_by_nickname(@validation.output[:nickname])
       @user ? check_password_correctness : create_user
     end
 

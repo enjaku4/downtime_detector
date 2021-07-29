@@ -7,7 +7,7 @@ module Web
         expose :web_addresses
 
         def call(params)
-          @web_addresses = WebAddressRepository.new.by_user_id(current_user.id)
+          @web_addresses = WebAddressRepository.new.belonging_to_user(current_user.id)
         end
       end
     end

@@ -8,7 +8,11 @@ class WebAddressRepository < Hanami::Repository
     web_addresses.where(url: url).one || create(url: url)
   end
 
-  def by_user_id(user_id)
-    web_addresses.join(users).where(user_id: user_id).distinct.to_a
+  def belonging_to_user(user_id)
+    web_addresses.join(:users).where(user_id: user_id).distinct.to_a
+  end
+
+  def orphaned?(id)
+    web_addresses.join(:users).where(web_address_id: id).to_a.empty?
   end
 end

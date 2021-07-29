@@ -1,6 +1,6 @@
 RSpec.describe UserRepository do
   describe '#by_nickname' do
-    subject { described_class.new.by_nickname('foobar') }
+    subject { described_class.new.find_by_nickname('foobar') }
 
     context 'if there are no records at all' do
       it { is_expected.to be_nil }

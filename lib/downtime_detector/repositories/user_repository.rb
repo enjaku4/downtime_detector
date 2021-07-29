@@ -4,7 +4,7 @@ class UserRepository < Hanami::Repository
     has_many :web_addresses, through: :user_having_web_addresses
   end
 
-  def by_nickname(nickname)
+  def find_by_nickname(nickname)
     users.where(nickname: nickname).one
   end
 end

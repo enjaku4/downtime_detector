@@ -4,11 +4,11 @@ class UserHavingWebAddressRepository < Hanami::Repository
     belongs_to :web_address
   end
 
-  def by_associations(user_id:, web_address_id:)
-    user_having_web_addresses.where(user_id: user_id, web_address_id: web_address_id).one
+  def exists?(user_id:, web_address_id:)
+    user_having_web_addresses.exist?(user_id: user_id, web_address_id: web_address_id)
   end
 
-  def by_web_address_id(web_address_id)
-    user_having_web_addresses.where(web_address_id: web_address_id).to_a
+  def delete_association(user_id:, web_address_id:)
+    delete(user_having_web_addresses.where(user_id: user_id, web_address_id: web_address_id).one.id)
   end
 end
