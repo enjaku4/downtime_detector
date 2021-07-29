@@ -15,16 +15,33 @@ RSpec.describe Web::Controllers::WebAddresses::Destroy do
     allow(interactor).to receive(:call)
   end
 
-  it 'deletes web address' do
-    subject
-    expect(interactor).to have_received(:call)
+  shared_examples_for 'redirection to root path' do
+    it 'redirects' do
+      expect(subject[0]).to eq(302)
+    end
+
+    it 'redirects to web root path' do
+      expect(subject[1]['location']).to eq(Web.routes.root_path)
+    end
   end
 
-  it 'redirects' do
-    expect(subject[0]).to eq(302)
+  context 'if web address has been deleted' do
+    before { WebAddressRepository.new.delete(web_address.id) }
+
+    it 'does no try to delete the web address again' do
+      subject
+      expect(interactor).not_to have_received(:call)
+    end
+
+    it_behaves_like 'redirection to root path'
   end
 
-  it 'redirects to web root path' do
-    expect(subject[1]['location']).to eq(Web.routes.root_path)
+  context 'if web address has been found' do
+    it 'deletes web address' do
+      subject
+      expect(interactor).to have_received(:call)
+    end
+
+    it_behaves_like 'redirection to root path'
   end
 end

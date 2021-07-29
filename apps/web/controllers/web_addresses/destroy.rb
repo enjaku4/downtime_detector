@@ -5,7 +5,9 @@ module Web
         include Web::Action
 
         def call(params)
-          ::WebAddresses::Destroy.new(web_address: WebAddressRepository.new.find(params[:id]), user: current_user).call
+          web_address = WebAddressRepository.new.find(params[:id])
+
+          ::WebAddresses::Destroy.new(web_address: web_address, user: current_user).call if web_address
 
           redirect_to routes.root_path
         end
