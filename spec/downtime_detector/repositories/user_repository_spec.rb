@@ -1,5 +1,5 @@
 RSpec.describe UserRepository do
-  describe '#by_nickname' do
+  describe '#find_by_nickname' do
     subject { described_class.new.find_by_nickname('foobar') }
 
     context 'if there are no records at all' do
@@ -16,13 +16,13 @@ RSpec.describe UserRepository do
     end
 
     context 'if there is only one record with the needed name' do
-      let!(:user) { Fabricate(:user) }
+      let!(:user) { Fabricate(:user, nickname: 'foobar') }
 
       it { is_expected.to eq(user) }
     end
 
     context 'if there are many records, yet there is one with the needed name' do
-      let!(:user) { Fabricate(:user) }
+      let!(:user) { Fabricate(:user, nickname: 'foobar') }
 
       before do
         Fabricate(:user, nickname: 'barbaz')

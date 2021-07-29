@@ -77,8 +77,8 @@ RSpec.describe Auth::AuthenticateUser do
       end
 
       it 'is creates a new user' do
-        expect(user_repository).to receive(:create).with(nickname: 'foobar', password: 'password_hash')
         subject
+        expect(user_repository).to have_received(:create).with(nickname: 'foobar', password: 'password_hash')
       end
 
       it 'returns created user' do
