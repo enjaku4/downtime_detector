@@ -40,7 +40,7 @@ RSpec.describe Auth::AuthenticateUser do
 
     context 'if user exists' do
       context 'if password is correct' do
-        let!(:user) { Fabricate(:user) }
+        let!(:user) { Fabricate(:user, nickname: 'foobar') }
 
         it 'is successful' do
           expect(subject.successful?).to be(true)
@@ -52,7 +52,7 @@ RSpec.describe Auth::AuthenticateUser do
       end
 
       context 'if password is incorrect' do
-        let!(:user) { Fabricate(:user, password: BCrypt::Password.create('foo')) }
+        let!(:user) { Fabricate(:user, nickname: 'foobar', password: BCrypt::Password.create('foo')) }
 
         it 'is unsuccessful' do
           expect(subject.successful?).to be(false)
