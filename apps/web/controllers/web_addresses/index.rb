@@ -4,7 +4,10 @@ module Web
       class Index
         include Web::Action
 
+        expose :web_addresses
+
         def call(params)
+          @web_addresses = WebAddressRepository.new.by_user_id(current_user.id)
         end
       end
     end

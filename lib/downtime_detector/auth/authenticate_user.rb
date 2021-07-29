@@ -23,7 +23,7 @@ module Auth
       end
 
       def check_password_correctness
-        error!('password is incorrect') unless @user.password_correct?(@validation.output[:password])
+        error('password is incorrect') unless @user.password_correct?(@validation.output[:password])
       end
 
       def create_user
