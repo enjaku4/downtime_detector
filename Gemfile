@@ -28,4 +28,5 @@ group :test do
   gem 'hanami-fabrication'
   gem 'database_cleaner-sequel'
   gem 'rspec-github', require: false
+  gem 'faker'
 end

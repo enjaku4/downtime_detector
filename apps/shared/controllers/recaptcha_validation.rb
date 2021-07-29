@@ -7,7 +7,7 @@ module RecaptchaValidation
       options = {
         action: action,
         minimum_score: 0.7,
-        response: params[:'g-recaptcha-response-data'][:"#{action}"],
+        response: params.dig(:'g-recaptcha-response-data', :"#{action}"),
         skip_remote_ip: true,
         env: Hanami.env
       }

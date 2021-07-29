@@ -3,7 +3,7 @@ require_relative '../../../shared/controllers/recaptcha_validation'
 RSpec.describe Auth::Controllers::Session::Create do
   it_behaves_like 'recaptcha validation', 'sign_in/sign_up', Auth.routes.root_path
 
-  subject { action.call('g-recaptcha-response-data' => { 'sign_in/sign_up' => 'foo' }, session: session_params) }
+  subject { action.call(session: session_params) }
 
   let(:action) { described_class.new }
   let(:session_params) { Hash[nickname: 'foo', password: 'bar'] }
