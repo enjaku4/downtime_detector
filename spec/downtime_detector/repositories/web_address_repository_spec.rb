@@ -2,7 +2,7 @@ RSpec.describe WebAddressRepository do
   describe '#find_or_create_by_url' do
     subject { repo_instance.find_or_create_by_url(url) }
 
-    let(:url) { 'https://google.com' }
+    let(:url) { Faker::Internet.url }
     let(:repo_instance) { described_class.new }
 
     context 'if there is a record with such url' do

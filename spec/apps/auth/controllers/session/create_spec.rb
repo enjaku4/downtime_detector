@@ -6,7 +6,7 @@ RSpec.describe Auth::Controllers::Session::Create do
   subject { action.call(session: session_params) }
 
   let(:action) { described_class.new }
-  let(:session_params) { Hash[nickname: 'foo', password: 'bar'] }
+  let(:session_params) { Hash[nickname: Faker::Internet.username, password: Faker::Internet.password] }
   let(:interactor) { instance_double(Auth::AuthenticateUser) }
 
   before { allow(Auth::AuthenticateUser).to receive(:new).with(session_params).and_return(interactor) }

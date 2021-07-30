@@ -9,7 +9,7 @@ RSpec.describe Web::Controllers::WebAddresses::Create do
 
   let(:action) { described_class.new }
   let(:user) { Fabricate(:user) }
-  let(:url) { 'https://foo.bar' }
+  let(:url) { Faker::Internet.url }
   let(:interactor) { instance_double(::WebAddresses::Create) }
 
   before { allow(::WebAddresses::Create).to receive(:new).with(url: url, user: user).and_return(interactor) }

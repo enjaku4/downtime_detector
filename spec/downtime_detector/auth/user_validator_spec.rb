@@ -1,7 +1,7 @@
 require_relative '../shared/validator'
 
 RSpec.describe Auth::UserValidator do
-  it_behaves_like 'valid validator', nickname: 'foobar', password: 'password'
+  it_behaves_like 'valid validator', nickname: Faker::Internet.username(specifier: 6..9), password: Faker::Internet.password(min_length: 6)
 
   it_behaves_like 'invalid validator', nickname: nil, errors: { nickname: 'must be filled' }
   it_behaves_like 'invalid validator', nickname: '', errors: { nickname: 'must be filled' }
