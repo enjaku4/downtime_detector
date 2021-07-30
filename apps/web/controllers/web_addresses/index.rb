@@ -7,6 +7,7 @@ module Web
         expose :web_addresses
 
         def call(params)
+          raise StandardError, 'test'
           @web_addresses = WebAddressRepository.new.belonging_to_user(current_user.id)
         end
       end
