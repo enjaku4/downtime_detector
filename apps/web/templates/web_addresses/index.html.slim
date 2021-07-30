@@ -15,8 +15,7 @@
           tbody
             - web_addresses.each do |web_address|
               tr
-                / TODO show page with errors
-                td = link_to web_address.url, routes.web_address_path(web_address.id)
+                td = web_address.url
                 td = web_address.pinged_at
                 td = web_address.http_status_code
                 td = web_address.status

@@ -15,4 +15,8 @@ class WebAddressRepository < Hanami::Repository
   def orphaned?(id)
     web_addresses.join(:users).where(web_address_id: id).to_a.empty?
   end
+
+  def ready_to_ping
+    web_addresses.where(Sequel.lit('pinged_at IS NULL OR pinged_at < ?', Chronic.parse('5 minutes ago'))).to_a
+  end
 end

@@ -10,6 +10,9 @@ gem 'recaptcha'
 gem 'puma'
 gem 'sidekiq'
 gem 'guard-sidekiq'
+gem 'sidekiq-scheduler'
+gem 'chronic'
+gem 'faraday'
 
 group :plugins do
   gem 'hanami-reloader', '~> 0.3'
