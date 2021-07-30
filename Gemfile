@@ -8,6 +8,8 @@ gem 'pg'
 gem 'bcrypt'
 gem 'recaptcha'
 gem 'puma'
+gem 'sidekiq'
+gem 'guard-sidekiq'
 
 group :plugins do
   gem 'hanami-reloader', '~> 0.3'

@@ -11,6 +11,7 @@ GEM
     byebug (11.1.3)
     coderay (1.1.3)
     concurrent-ruby (1.1.8)
+    connection_pool (2.2.5)
     database_cleaner-core (2.0.1)
     database_cleaner-sequel (2.0.0)
       database_cleaner-core (~> 2.0.0)
@@ -73,6 +74,9 @@ GEM
       ffi
       guard (~> 2.3)
       spoon
+    guard-sidekiq (0.1.0)
+      guard (>= 2)
+      sidekiq
     hanami (1.3.4)
       bundler (>= 1.6, < 3)
       concurrent-ruby (~> 1.0)
@@ -163,6 +167,7 @@ GEM
       ffi (~> 1.0)
     recaptcha (5.8.0)
       json
+    redis (4.4.0)
     rom (3.3.3)
       concurrent-ruby (~> 1.0)
       dry-core (~> 0.3)
@@ -202,6 +207,10 @@ GEM
     rspec-support (3.10.2)
     sequel (4.49.0)
     shellany (0.0.1)
+    sidekiq (6.2.1)
+      connection_pool (>= 2.2.2)
+      rack (~> 2.0)
+      redis (>= 4.2.0)
     slim (4.1.0)
       temple (>= 0.7.6, < 0.9)
       tilt (>= 2.0.6, < 2.1)
@@ -223,6 +232,7 @@ DEPENDENCIES
   database_cleaner-sequel
   dotenv (~> 2.4)
   faker
+  guard-sidekiq
   hanami (~> 1.3)
   hanami-fabrication
   hanami-model (~> 1.3)
@@ -235,6 +245,7 @@ DEPENDENCIES
   recaptcha
   rspec
   rspec-github
+  sidekiq
   slim
 
 BUNDLED WITH

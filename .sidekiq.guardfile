@@ -1,0 +1,5 @@
+guard 'sidekiq', environment: 'development', require: './config/boot.rb', config: './config/sidekiq.yml' do
+  watch(%r{config/*})
+  watch(%r{lib/*})
+  watch(%r{apps/*})
+end

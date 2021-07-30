@@ -1,8 +1,9 @@
 FROM ruby:2.6.7
 
-RUN apt-get update -qq && apt-get install -y postgresql-client
+RUN apt-get update -qq && apt-get install -y postgresql-client wait-for-it
 
 ENV DATABASE_HOST=db
+ENV REDIS_HOST=redis
 
 RUN mkdir /usr/src/downtime_detector
 WORKDIR /usr/src/downtime_detector

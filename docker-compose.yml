@@ -16,6 +16,16 @@ services:
     tty: true
     command: bash -c 'bundle && bundle exec hanami server'
 
+  sidekiq:
+    image: downtime_detector
+    volumes:
+      - .:/usr/src/downtime_detector
+      - bundle_cache:/usr/local/bundle
+    depends_on:
+      - db
+      - redis
+    command: bash -c 'wait-for-it web:2300 --timeout=0 && bundle exec guard -n f -i -G .sidekiq.guardfile'
+
   db:
     image: postgres:12.6
     volumes:
@@ -24,6 +34,11 @@ services:
       - 'POSTGRES_HOST_AUTH_METHOD=trust'
     ports:
       - '5432:5432'
+
+  redis:
+    image: redis:6.0.1
+    volumes:
+      - ./tmp/redis:/data
 
 volumes:
   bundle_cache:
