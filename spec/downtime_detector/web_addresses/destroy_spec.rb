@@ -5,6 +5,8 @@ RSpec.describe ::WebAddresses::Destroy do
   let(:user) { Fabricate(:user) }
   let!(:user_having_web_address) { Fabricate(:user_having_web_address, user_id: user.id, web_address_id: web_address.id) }
 
+  it { is_expected.to be_successful }
+
   it 'deletes the association' do
     expect { subject }.to change { UserHavingWebAddressRepository.new.find(user_having_web_address.id) }
       .from(user_having_web_address).to(nil)
