@@ -56,4 +56,19 @@ RSpec.describe WebAddressRepository do
       it { is_expected.to be true }
     end
   end
+
+  describe '#ready_to_ping' do
+    let!(:web_address_pinged_recently) { Fabricate(:web_address, pinged_at: Chronic.parse('6 minutes ago')) }
+    let!(:web_address_not_pinged) { Fabricate(:web_address, pinged_at: nil) }
+
+    before do
+      Fabricate(:web_address, pinged_at: Chronic.parse('1 minute ago'))
+      Fabricate(:web_address, pinged_at: Chronic.parse('4 minutes ago'))
+    end
+
+    it 'returns only ready to ping web addresses' do
+      expect(described_class.new.ready_to_ping)
+        .to contain_exactly(web_address_pinged_recently, web_address_not_pinged)
+    end
+  end
 end
