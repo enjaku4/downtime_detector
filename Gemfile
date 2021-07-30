@@ -14,6 +14,7 @@ gem 'sidekiq'
 gem 'sidekiq-scheduler'
 gem 'chronic'
 gem 'faraday'
+gem 'barnes'
 
 group :plugins do
   gem 'hanami-reloader', '~> 0.3'
