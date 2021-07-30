@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      BUNDLE_WITHOUT: development:plugin
+      BUNDLE_WITHOUT: development:plugins
       DATABASE_HOST: localhost
       HANAMI_ENV: test
 
