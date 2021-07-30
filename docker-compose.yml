@@ -27,7 +27,7 @@ services:
     command: bash -c 'wait-for-it web:2300 --timeout=0 && bundle exec guard -n f -i -G .sidekiq.guardfile'
 
   db:
-    image: postgres:12.6
+    image: postgres:13.3
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
     environment:
@@ -36,7 +36,7 @@ services:
       - '5432:5432'
 
   redis:
-    image: redis:6.0.1
+    image: redis:6.2
     volumes:
       - ./tmp/redis:/data
 

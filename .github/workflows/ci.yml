@@ -10,13 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      BUNDLE_WITHOUT: development
+      BUNDLE_WITHOUT: development:plugins
       DATABASE_HOST: localhost
       HANAMI_ENV: test
 
     services:
       db:
-        image: postgres:12.6
+        image: postgres:13.3
         ports:
           - 5432:5432
         env:

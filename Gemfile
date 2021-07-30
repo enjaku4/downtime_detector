@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby '2.6.7'
+
 gem 'rake'
 gem 'hanami', '~> 1.3'
 gem 'hanami-model', '~> 1.3'
@@ -9,7 +11,6 @@ gem 'bcrypt'
 gem 'recaptcha'
 gem 'puma'
 gem 'sidekiq'
-gem 'guard-sidekiq'
 gem 'sidekiq-scheduler'
 gem 'chronic'
 gem 'faraday'
@@ -22,6 +23,7 @@ group :development do
   gem 'byebug'
   gem 'hanami-webconsole'
   gem 'pry'
+  gem 'guard-sidekiq'
 end
 
 group :test, :development do
