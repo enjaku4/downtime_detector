@@ -9,7 +9,6 @@ class WebAddressRepository < Hanami::Repository
   end
 
   def belonging_to_user(user_id)
-    raise StandardError, 'test'
     web_addresses.join(:users).where(user_id: user_id).distinct.to_a
   end
 

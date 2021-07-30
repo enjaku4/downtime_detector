@@ -194,7 +194,6 @@ GEM
     recaptcha (5.8.0)
       json
     redis (4.4.0)
-    rollbar (3.2.0)
     rom (3.3.3)
       concurrent-ruby (~> 1.0)
       dry-core (~> 0.3)
@@ -286,7 +285,6 @@ DEPENDENCIES
   puma
   rake
   recaptcha
-  rollbar
   rspec
   rspec-github
   sidekiq
