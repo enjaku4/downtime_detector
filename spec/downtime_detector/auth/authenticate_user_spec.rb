@@ -14,9 +14,7 @@ RSpec.describe Auth::AuthenticateUser do
       )
     end
 
-    it 'is unsuccessful' do
-      expect(subject.successful?).to be false
-    end
+    it { is_expected.not_to be_successful }
 
     it 'has errors' do
       expect(subject.errors).to contain_exactly('bad, baz')
@@ -27,7 +25,7 @@ RSpec.describe Auth::AuthenticateUser do
     end
 
     it 'does not create any users' do
-      expect { subject }.not_to change { user_repository.last }.from(nil)
+      expect { subject }.not_to change { UserRepository.new.last }.from(nil)
     end
   end
 
@@ -42,9 +40,7 @@ RSpec.describe Auth::AuthenticateUser do
       context 'if password is correct' do
         let!(:user) { Fabricate(:user, nickname: args[:nickname], password: BCrypt::Password.create(args[:password])) }
 
-        it 'is successful' do
-          expect(subject.successful?).to be(true)
-        end
+        it { is_expected.to be_successful }
 
         it 'returns the user' do
           expect(subject.user).to eq(user)
@@ -54,9 +50,7 @@ RSpec.describe Auth::AuthenticateUser do
       context 'if password is incorrect' do
         let!(:user) { Fabricate(:user, nickname: args[:nickname], password: BCrypt::Password.create(Faker::Internet.password)) }
 
-        it 'is unsuccessful' do
-          expect(subject.successful?).to be(false)
-        end
+        it { is_expected.not_to be_successful }
 
         it 'has errors' do
           expect(subject.errors).to contain_exactly('password is incorrect')
@@ -73,9 +67,7 @@ RSpec.describe Auth::AuthenticateUser do
         allow(user_repository).to receive(:create).with(nickname: args[:nickname], password: password_hash).and_return(user_double)
       end
 
-      it 'is successful' do
-        expect(subject.successful?).to be(true)
-      end
+      it { is_expected.to be_successful }
 
       it 'is creates a new user' do
         subject

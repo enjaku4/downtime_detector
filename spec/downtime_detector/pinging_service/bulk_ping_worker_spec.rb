@@ -8,7 +8,7 @@ RSpec.describe PingingService::BulkPingWorker do
 
   before do
     Fabricate(:web_address, pinged_at: Chronic.parse('4 minutes ago'))
-    Fabricate(:web_address, pinged_at: Chronic.parse('1 minutes ago'))
+    Fabricate(:web_address, pinged_at: Chronic.parse('1 minute ago'))
   end
 
   it 'enqueues exactly 2 jobs' do
