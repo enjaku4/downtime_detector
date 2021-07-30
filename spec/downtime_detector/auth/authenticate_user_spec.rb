@@ -27,7 +27,7 @@ RSpec.describe Auth::AuthenticateUser do
     end
 
     it 'does not create any users' do
-      expect { subject }.not_to change { UserRepository.new.last }.from(nil)
+      expect { subject }.not_to change { user_repository.last }.from(nil)
     end
   end
 

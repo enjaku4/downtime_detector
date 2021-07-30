@@ -4,13 +4,14 @@ module WebAddresses
   class Create
     include Hanami::Interactor
 
-    def initialize(url:, user:)
+    def initialize(url:, user:, web_address_repository: WebAddressRepository.new)
       @validation = UrlValidator.new(url: url).validate
       @user = user
+      @web_address_repository = web_address_repository
     end
 
     def call
-      web_address = WebAddressRepository.new.find_or_create_by_url(@validation.output[:url])
+      web_address = @web_address_repository.find_or_create_by_url(@validation.output[:url])
 
       if UserHavingWebAddressRepository.new.exists?(user_id: @user.id, web_address_id: web_address.id)
         error('URL already exists')
