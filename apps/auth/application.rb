@@ -81,7 +81,7 @@ module Auth
       #
       # See: http://www.rubydoc.info/gems/rack/Rack/Session/Cookie
       #
-      sessions :cookie, secret: ENV['SESSIONS_SECRET']
+      sessions :cookie, secret: ENV.fetch('SESSIONS_SECRET')
 
       # Configure Rack middleware for this application
       #
