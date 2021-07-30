@@ -1,6 +1,6 @@
 module PingingService
   module Results
-    class BaseProcessing
+    class BaseProcessor
       def initialize(web_address, args)
         @web_address = web_address
         post_initialize(args)

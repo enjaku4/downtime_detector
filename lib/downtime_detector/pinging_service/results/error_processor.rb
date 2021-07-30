@@ -1,6 +1,6 @@
 module PingingService
   module Results
-    class ErrorProcessing < BaseProcessing
+    class ErrorProcessor < BaseProcessor
       private
 
         def post_initialize(args)
