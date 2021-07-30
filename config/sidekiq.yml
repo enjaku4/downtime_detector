@@ -2,6 +2,7 @@
 :max_retries: 0
 
 :queues:
+  - rollbar
   - default
 
 development:

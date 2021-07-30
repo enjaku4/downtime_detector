@@ -4,7 +4,6 @@ require 'hanami/model'
 require_relative '../lib/downtime_detector'
 require_relative '../apps/web/application'
 require_relative '../apps/auth/application'
-require 'rollbar'
 
 Hanami.configure do
   mount Auth::Application, at: '/auth'
@@ -40,8 +39,6 @@ Hanami.configure do
   environment :development do
     # See: https://guides.hanamirb.org/projects/logging
     logger level: :debug
-
-    BetterErrors::Middleware.allow_ip!('0.0.0.0/0')
   end
 
   environment :production do
@@ -49,10 +46,6 @@ Hanami.configure do
 
     mailer do
       delivery :smtp, address: ENV.fetch('SMTP_HOST'), port: ENV.fetch('SMTP_PORT')
-    end
-
-    Rollbar.configure do |config|
-      config.access_token = ENV.fetch('ROLLBAR_ACCESS_TOKEN')
     end
   end
 end
