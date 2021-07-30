@@ -1,13 +1,10 @@
 module Web
   module Controllers
     module WebAddresses
-      class Index
+      class New
         include Web::Action
 
-        expose :web_addresses
-
         def call(params)
-          @web_addresses = WebAddressRepository.new.belonging_to_user(current_user.id)
         end
       end
     end

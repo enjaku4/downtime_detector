@@ -1,5 +1,10 @@
 shared_examples_for 'recaptcha validation' do |recaptcha_action, redirect_path|
-  subject { action.call({ 'g-recaptcha-response-data' => { recaptcha_action => 'foo' }}) }
+  subject do
+    action.call(
+      'g-recaptcha-response-data' => { recaptcha_action => 'foo' },
+      'rack.session' => { user_id: Fabricate(:user).id }
+    )
+  end
 
   let(:action) { described_class.new }
 

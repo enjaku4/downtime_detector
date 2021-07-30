@@ -1,7 +1,7 @@
 RSpec.describe Auth::AuthenticateUser do
   subject { described_class.new(**args, user_repository: user_repository).call }
 
-  let(:args) { Hash[nickname: 'foobar', password: 'password'] }
+  let(:args) { Hash[nickname: Faker::Internet.username, password: Faker::Internet.password] }
   let(:validator) { instance_double(Auth::UserValidator) }
   let(:user_repository) { UserRepository.new }
 
@@ -27,7 +27,7 @@ RSpec.describe Auth::AuthenticateUser do
     end
 
     it 'does not create any users' do
-      expect { subject }.not_to change { UserRepository.new.last }.from(nil)
+      expect { subject }.not_to change { user_repository.last }.from(nil)
     end
   end
 
@@ -40,7 +40,7 @@ RSpec.describe Auth::AuthenticateUser do
 
     context 'if user exists' do
       context 'if password is correct' do
-        let!(:user) { Fabricate(:user) }
+        let!(:user) { Fabricate(:user, nickname: args[:nickname], password: BCrypt::Password.create(args[:password])) }
 
         it 'is successful' do
           expect(subject.successful?).to be(true)
@@ -52,7 +52,7 @@ RSpec.describe Auth::AuthenticateUser do
       end
 
       context 'if password is incorrect' do
-        let!(:user) { Fabricate(:user, password: BCrypt::Password.create('foo')) }
+        let!(:user) { Fabricate(:user, nickname: args[:nickname], password: BCrypt::Password.create(Faker::Internet.password)) }
 
         it 'is unsuccessful' do
           expect(subject.successful?).to be(false)
@@ -66,10 +66,11 @@ RSpec.describe Auth::AuthenticateUser do
 
     context 'if user does not exist' do
       let(:user_double) { double }
+      let(:password_hash) { BCrypt::Password.create(args[:password]) }
 
       before do
-        allow(BCrypt::Password).to receive(:create).with('password').and_return('password_hash')
-        allow(user_repository).to receive(:create).with(nickname: 'foobar', password: 'password_hash').and_return(user_double)
+        allow(BCrypt::Password).to receive(:create).with(args[:password]).and_return(password_hash)
+        allow(user_repository).to receive(:create).with(nickname: args[:nickname], password: password_hash).and_return(user_double)
       end
 
       it 'is successful' do
@@ -77,8 +78,8 @@ RSpec.describe Auth::AuthenticateUser do
       end
 
       it 'is creates a new user' do
-        expect(user_repository).to receive(:create).with(nickname: 'foobar', password: 'password_hash')
         subject
+        expect(user_repository).to have_received(:create).with(nickname: args[:nickname], password: password_hash)
       end
 
       it 'returns created user' do

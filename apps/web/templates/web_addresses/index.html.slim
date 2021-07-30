@@ -1,1 +1,51 @@
-h1.text-center Hi!
+.row
+  .col.text-center
+    h2.mb-4 Web Addresses
+
+    - if web_addresses.any?
+      .table-responsive.mb-3
+        table.table.table-dark.table-striped.table-bordered.table-sm
+          thead
+            tr
+              th URL
+              th pinged at
+              th HTTP status code
+              th status
+              th
+          tbody
+            - web_addresses.each do |web_address|
+              tr
+                / TODO show page with errors
+                td = link_to web_address.url, routes.web_address_path(web_address.id)
+                td = web_address.pinged_at
+                td = web_address.http_status_code
+                td = web_address.status
+                td
+                  = form_for :web_address, routes.web_address_path(web_address.id), method: :delete do
+                    = submit 'delete', class: 'btn btn-link text-danger p-0 pb-1'
+
+    - else
+      p You have no web addresses added.
+
+    = link_to 'Add web address', routes.new_web_address_path, class: 'btn btn-primary'
+
+    / TODO notifications
+
+    / hr
+
+    / h5 E-mail for receiving notifications
+
+    / .row
+    /   .col-12.col-md-6.offset-md-3.text-center
+
+    /     - if current_user.email
+    /       p: u = current_user.email
+    /       = form_for :email, routes.user_path(web_address), method: :patch do
+    /         = submit 'Delete email', class: 'btn btn-warning btn-sm'
+
+    /     - else
+    /       = form_for :email, routes.user_path(web_address), method: :patch do |f|
+    /         - div(class: 'form-group') do
+    /           - text_field :email, placeholder: 'email@example.com', class: 'form-control'
+    /         - div do
+    /           - submit 'Add', class: 'btn btn-primary btn-sm'

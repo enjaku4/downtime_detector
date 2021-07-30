@@ -1,0 +1,10 @@
+.row
+  .col-12.col-md-6.offset-md-3.text-center
+    h2.mb-4 Web Address
+    = form_for :web_address, routes.web_addresses_path do
+      - div do
+        - recaptcha_for(action: 'create_web_address')
+      - div(class: 'form-group') do
+        - text_field :url, placeholder: 'https://www.example.com', class: 'form-control'
+      - div do
+        - submit 'Add', class: 'btn btn-primary'
