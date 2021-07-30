@@ -4,16 +4,18 @@ shared_examples_for 'valid validator' do |data|
   end
 end
 
-shared_examples_for 'invalid validator' do |data, attribute, message|
+shared_examples_for 'invalid validator' do |data|
   subject { described_class.new(data).validate }
 
-  context "when #{data}" do
-    it 'is invalid' do
-      expect(subject.success?).to be false
-    end
+  let(:errors) { data.delete(:errors) }
 
-    it "has \'#{message}\' error" do
-      expect(subject.errors[attribute]).to eq([message])
+  it 'is invalid' do
+    expect(subject.success?).to be false
+  end
+
+  it 'has errors' do
+    errors.each do |key, value|
+      expect(subject.errors[key]).to contain_exactly(value)
     end
   end
 end
