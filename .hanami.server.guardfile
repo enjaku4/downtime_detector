@@ -1,4 +1,4 @@
-guard "rack", port: ENV["PORT"] || 2300 do
+guard "rack", port: ENV["RACK_PORT"] || ENV["HANAMI_PORT"] || 2300 do
   watch(%r{config/*})
   watch(%r{lib/*})
   watch(%r{apps/*})
