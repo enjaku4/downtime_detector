@@ -9,4 +9,6 @@ root to: 'web_addresses#index'
 
 resources :web_addresses, except: [:index, :edit, :update]
 
+resource :user, only: [:update]
+
 mount Sidekiq::Web, at: '/sidekiq' if Hanami.env?(:development)

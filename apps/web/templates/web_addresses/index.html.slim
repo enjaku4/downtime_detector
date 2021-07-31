@@ -28,23 +28,21 @@
 
     = link_to 'Add web address', routes.new_web_address_path, class: 'btn btn-primary'
 
-    / TODO notifications (email | phone)
+    hr
 
-    / hr
+    h5 E-mail for receiving notifications
 
-    / h5 E-mail for receiving notifications
+    .row
+      .col-12.col-md-6.offset-md-3.text-center
 
-    / .row
-    /   .col-12.col-md-6.offset-md-3.text-center
+        - if current_user.email
+          p: u = current_user.email
+          = form_for :email, routes.user_path, method: :patch do
+            = submit 'Delete email', class: 'btn btn-warning btn-sm'
 
-    /     - if current_user.email
-    /       p: u = current_user.email
-    /       = form_for :email, routes.user_path(web_address), method: :patch do
-    /         = submit 'Delete email', class: 'btn btn-warning btn-sm'
-
-    /     - else
-    /       = form_for :email, routes.user_path(web_address), method: :patch do |f|
-    /         - div(class: 'form-group') do
-    /           - text_field :email, placeholder: 'email@example.com', class: 'form-control'
-    /         - div do
-    /           - submit 'Add', class: 'btn btn-primary btn-sm'
+        - else
+          = form_for :email, routes.user_path, method: :patch do |f|
+            - div(class: 'form-group') do
+              - text_field :email, placeholder: 'email@example.com', class: 'form-control'
+            - div do
+              - submit 'Add', class: 'btn btn-primary btn-sm'
