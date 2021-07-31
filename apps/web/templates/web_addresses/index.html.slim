@@ -37,7 +37,7 @@
 
         - if current_user.email
           p: u = current_user.email
-          = form_for :email, routes.delete_email_user_path, method: :patch do
+          = form_for :email, routes.update_email_user_path, method: :patch do
             = submit 'Delete email', class: 'btn btn-warning btn-sm'
 
         - else

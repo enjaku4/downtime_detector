@@ -5,7 +5,7 @@ module Web
         include Web::Action
 
         def call(params)
-          result = Users::UpdateEmail.new(user: current_user, email: params[:user][:email]).call
+          result = Users::UpdateEmail.new(user: current_user, email: params.dig(:user, :email)).call
 
           flash[:danger] = result.error unless result.successful?
 

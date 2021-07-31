@@ -1,9 +1,9 @@
 module Users
   class EmailValidator
-    include Hanami::Validations::Form
+    include Hanami::Validations
 
     validations do
-      required(:email).filled(format?: URI::MailTo::EMAIL_REGEXP)
+      required(:email).maybe(:filled?, format?: URI::MailTo::EMAIL_REGEXP)
     end
   end
 end

@@ -12,7 +12,6 @@ resources :web_addresses, except: [:index, :edit, :update]
 resource :user, only: [] do
   collection do
     patch :update_email
-    patch :delete_email
   end
 end
 
