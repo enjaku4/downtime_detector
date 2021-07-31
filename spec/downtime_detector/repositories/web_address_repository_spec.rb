@@ -18,7 +18,7 @@ RSpec.describe WebAddressRepository do
 
       it 'creates a new web address' do
         subject
-        expect(repo_instance).to have_received(:create).with(url: url)
+        expect(repo_instance).to have_received(:create)
       end
 
       it { is_expected.to eq web_address }

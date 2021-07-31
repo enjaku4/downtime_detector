@@ -21,6 +21,6 @@ class WebAddressRepository < Hanami::Repository
   end
 
   def find_with_users(id)
-    aggregate(:users).where(id: id).as(WebAddress).one
+    aggregate(:users).where(id: id).map_to(WebAddress).one
   end
 end
