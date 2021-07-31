@@ -41,7 +41,7 @@ RSpec.describe ::WebAddresses::Create do
 
     context 'if user does not have the web address' do
       context 'if web address exists' do
-        let!(:web_address) { Fabricate(:web_address, url: url) }
+        let(:web_address) { Fabricate(:web_address, url: url) }
 
         it { is_expected.to be_successful }
 
