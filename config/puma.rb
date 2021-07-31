@@ -11,8 +11,8 @@ end
 preload_app!
 
 rackup      DefaultRackup
-port        ENV['RACK_PORT'] || ENV['HANAMI_PORT'] || 2300
-environment ENV['RACK_ENV']  || ENV['HANAMI_ENV']  || 'development'
+port        ENV['PORT']     || 2300
+environment ENV['RACK_ENV'] || ENV['HANAMI_ENV'] || 'development'
 
 on_worker_boot do
   Hanami.boot
