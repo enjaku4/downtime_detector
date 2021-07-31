@@ -5,11 +5,5 @@ module Mailers
     from    'info@downtimedetector.xyz'
     to      :email
     subject 'A problem occured!'
-
-    private
-
-      def email
-        user.email
-      end
   end
 end
