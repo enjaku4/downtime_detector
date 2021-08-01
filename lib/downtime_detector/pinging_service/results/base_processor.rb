@@ -15,6 +15,7 @@ module PingingService
         if @web_address.status == 'up'
           reset_notifications
         elsif @web_address.faulty?
+          update_last_problem
           notify_users
         end
       end
@@ -39,6 +40,10 @@ module PingingService
 
         def reset_notifications
           WebAddressRepository.new.update(@web_address.id, notifications_sent: false)
+        end
+
+        def update_last_problem
+          raise NotImplementedError
         end
 
         def notify_users
