@@ -41,7 +41,7 @@ RSpec.describe ::WebAddresses::Create do
 
     context 'if user does not have the web address' do
       context 'if web address exists' do
-        let!(:web_address) { Fabricate(:web_address, url: url) }
+        let(:web_address) { Fabricate(:web_address, url: url) }
 
         it { is_expected.to be_successful }
 
@@ -61,7 +61,7 @@ RSpec.describe ::WebAddresses::Create do
 
         it 'creates a web_address' do
           subject
-          expect(web_address_repository).to have_received(:find_or_create_by_url).with(url)
+          expect(web_address_repository).to have_received(:find_or_create_by_url)
         end
 
         it 'creates an association' do

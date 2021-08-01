@@ -19,4 +19,8 @@ class WebAddressRepository < Hanami::Repository
   def ready_to_ping
     web_addresses.where(Sequel.lit('pinged_at IS NULL OR pinged_at < ?', Chronic.parse('5 minutes ago'))).to_a
   end
+
+  def find_with_users(id)
+    aggregate(:users).where(id: id).map_to(WebAddress).one
+  end
 end

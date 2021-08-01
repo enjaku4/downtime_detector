@@ -3,6 +3,7 @@
 
 :queues:
   - default
+  - mailers
 
 development:
   :schedule:

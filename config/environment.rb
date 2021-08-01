@@ -34,6 +34,10 @@ Hanami.configure do
 
     # See https://guides.hanamirb.org/mailers/delivery
     delivery :test
+
+    prepare do
+      extend Mailers::Async
+    end
   end
 
   environment :development do
@@ -45,7 +49,9 @@ Hanami.configure do
     logger level: :info, formatter: :json, filter: []
 
     mailer do
-      delivery :smtp, address: ENV.fetch('SMTP_HOST'), port: ENV.fetch('SMTP_PORT')
+      delivery :smtp, address: ENV.fetch('MAILGUN_SMTP_SERVER'), port: ENV.fetch('MAILGUN_SMTP_PORT'),
+        user_name: ENV.fetch('MAILGUN_SMTP_LOGIN'), password: ENV.fetch('MAILGUN_SMTP_PASSWORD'),
+        domain: 'downtimedetector.xyz', authentication: :plain
     end
   end
 end

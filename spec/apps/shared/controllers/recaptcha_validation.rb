@@ -11,7 +11,7 @@ shared_examples_for 'recaptcha validation' do |recaptcha_action, redirect_path|
   before do
     allow(action).to receive(:verify_recaptcha).with(
       action: recaptcha_action,
-      minimum_score: 0.7,
+      minimum_score: 0.6,
       response: 'foo',
       skip_remote_ip: true,
       env: 'test'

@@ -18,7 +18,7 @@ RSpec.describe WebAddressRepository do
 
       it 'creates a new web address' do
         subject
-        expect(repo_instance).to have_received(:create).with(url: url)
+        expect(repo_instance).to have_received(:create)
       end
 
       it { is_expected.to eq web_address }
@@ -69,6 +69,26 @@ RSpec.describe WebAddressRepository do
     it 'returns only ready to ping web addresses' do
       expect(described_class.new.ready_to_ping)
         .to contain_exactly(web_address_pinged_recently, web_address_not_pinged)
+    end
+  end
+
+  describe '#find_with_users' do
+    subject { described_class.new.find_with_users(web_address.id) }
+
+    let(:web_address) { Fabricate(:web_address) }
+    let(:users) { Fabricate.times(2, :user) }
+
+    before do
+      users.each do |user|
+        UserHavingWebAddressRepository.new.create(user_id: user.id, web_address_id: web_address.id)
+      end
+      Fabricate(:user)
+    end
+
+    it { is_expected.to eq(web_address) }
+
+    it 'loads users associated with the web address' do
+      expect(subject.users).to match_array(users)
     end
   end
 end

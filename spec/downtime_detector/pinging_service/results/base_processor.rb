@@ -28,7 +28,7 @@ shared_examples_for "the processing of the web address pinging result with \'fau
 
   it 'sends notifications' do
     subject
-    expect(PingingService::UsersNotificationWorker).to have_received(:perform_async).with(web_address.id)
+    expect(PingingService::UsersNotificationWorker).to have_received(:perform_async)
   end
 end
 
