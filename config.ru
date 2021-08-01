@@ -1,5 +1,5 @@
 require_relative 'config/environment'
 
-use Airbrake::Rack::Middleware if Hanami.env?(:production)
+use Airbrake::Rack::Middleware
 
 run Hanami.app
