@@ -1,6 +1,10 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    airbrake (11.0.3)
+      airbrake-ruby (~> 5.1)
+    airbrake-ruby (5.2.1)
+      rbtree3 (~> 0.5)
     barnes (0.0.9)
       multi_json (~> 1)
       statsd-ruby (~> 1.1)
@@ -195,6 +199,7 @@ GEM
     rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
+    rbtree3 (0.6.0)
     recaptcha (5.8.0)
       json
     redis (4.4.0)
@@ -272,6 +277,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  airbrake
   barnes
   bcrypt
   byebug
