@@ -6,7 +6,7 @@ describe PingingService::Results::ResponseProcessor do
   let(:web_address) { Fabricate(:web_address, http_status_code: nil, status: 'unknown') }
 
   context 'if the http status code is 100' do
-    let(:response) { Faraday::Response.new(status: 100) }
+    let(:response) { Faraday::Response.new(status: 100, reason_phrase: 'continue') }
 
     it_behaves_like "the processing of the web address pinging result with \'up\' status"
 
@@ -17,10 +17,14 @@ describe PingingService::Results::ResponseProcessor do
     it 'changes the status attribute to :up' do
       expect { subject }.to change { WebAddressRepository.new.find(web_address.id).status }.from('unknown').to('up')
     end
+
+    it 'does not update the last problem' do
+      expect { subject }.not_to change { WebAddressRepository.new.find(web_address.id).last_problem }.from(nil)
+    end
   end
 
   context 'if the http status code is 200' do
-    let(:response) { Faraday::Response.new(status: 200) }
+    let(:response) { Faraday::Response.new(status: 200, reason_phrase: 'ok') }
 
     it_behaves_like "the processing of the web address pinging result with \'up\' status"
 
@@ -31,10 +35,14 @@ describe PingingService::Results::ResponseProcessor do
     it 'changes the status attribute to :up' do
       expect { subject }.to change { WebAddressRepository.new.find(web_address.id).status }.from('unknown').to('up')
     end
+
+    it 'does not update the last problem' do
+      expect { subject }.not_to change { WebAddressRepository.new.find(web_address.id).last_problem }.from(nil)
+    end
   end
 
   context 'if the http status code is 300' do
-    let(:response) { Faraday::Response.new(status: 300) }
+    let(:response) { Faraday::Response.new(status: 300, reason_phrase: 'multiple choices') }
 
     it_behaves_like "the processing of the web address pinging result with \'up\' status"
 
@@ -44,6 +52,10 @@ describe PingingService::Results::ResponseProcessor do
 
     it 'changes the status attribute to :up' do
       expect { subject }.to change { WebAddressRepository.new.find(web_address.id).status }.from('unknown').to('up')
+    end
+
+    it 'does not update the last problem' do
+      expect { subject }.not_to change { WebAddressRepository.new.find(web_address.id).last_problem }.from(nil)
     end
   end
 
@@ -59,6 +71,11 @@ describe PingingService::Results::ResponseProcessor do
     it 'changes the status attribute to :down' do
       expect { subject }.to change { WebAddressRepository.new.find(web_address.id).status }.from('unknown').to('down')
     end
+
+    it 'updates the last problem' do
+      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).last_problem }
+        .from(nil).to(response.reason_phrase)
+    end
   end
 
   context 'if the http status code is 500' do
@@ -72,6 +89,11 @@ describe PingingService::Results::ResponseProcessor do
 
     it 'changes the status attribute to :down' do
       expect { subject }.to change { WebAddressRepository.new.find(web_address.id).status }.from('unknown').to('down')
+    end
+
+    it 'updates the last problem' do
+      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).last_problem }
+        .from(nil).to(response.reason_phrase)
     end
   end
 end

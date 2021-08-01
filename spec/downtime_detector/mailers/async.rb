@@ -4,7 +4,7 @@ shared_examples_for 'asynchronous mailer' do
 
   before { allow(described_class).to receive(:delay).with(queue: 'mailers').and_return(delayed_mailer) }
 
-  it 'delivers the email' do
+  it 'delivers the email asynchronously' do
     expect(delayed_mailer).to receive(:deliver).with(args)
     described_class.deliver_async(args)
   end
