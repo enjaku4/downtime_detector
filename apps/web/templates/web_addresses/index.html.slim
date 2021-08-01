@@ -21,7 +21,10 @@
                 td = web_address.status
                 td
                   = form_for :web_address, routes.web_address_path(web_address.id), method: :delete do
-                    = submit 'delete', class: 'btn btn-link text-danger p-0 pb-1'
+                    = submit 'delete', class: 'btn btn-link text-danger pt-0 pb-1'
+              - if web_address.faulty?
+                tr
+                  td colspan='5' = web_address.last_problem
 
     - else
       p You have no web addresses added.
