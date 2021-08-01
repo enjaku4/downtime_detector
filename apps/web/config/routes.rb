@@ -13,6 +13,6 @@ resource :user, only: [:update]
 
 Sidekiq::Web.use Rack::Auth::Basic do |username, password|
   username == ENV.fetch('BASIC_AUTH_USERNAME') && password == ENV.fetch('BASIC_AUTH_PASSWORD')
-end if Hanami.env?(:production)
+end unless Hanami.env?(:development)
 
 mount Sidekiq::Web, at: '/sidekiq'
