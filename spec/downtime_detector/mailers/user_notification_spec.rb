@@ -1,8 +1,12 @@
+require_relative 'async'
+
 RSpec.describe Mailers::UserNotification do
-  before { Hanami::Mailer.deliveries.clear }
+  it_behaves_like 'asynchronous mailer'
 
   let(:email) { Faker::Internet.email }
   let(:url) { Faker::Internet.url }
+
+  before { Hanami::Mailer.deliveries.clear }
 
   it 'delivers notification email' do
     described_class.deliver(email: email, url: url)
