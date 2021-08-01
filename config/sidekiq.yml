@@ -10,6 +10,7 @@ development:
     ping_delegation_job:
       every: 1m
       class: PingingService::BulkPingWorker
+      enabled: false
 
 production:
   :schedule:
