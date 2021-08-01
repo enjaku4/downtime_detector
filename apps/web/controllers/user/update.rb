@@ -1,7 +1,7 @@
 module Web
   module Controllers
     module User
-      class UpdateEmail
+      class Update
         include Web::Action
 
         def call(params)

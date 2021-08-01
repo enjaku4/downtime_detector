@@ -9,11 +9,7 @@ root to: 'web_addresses#index'
 
 resources :web_addresses, except: [:index, :edit, :update]
 
-resource :user, only: [] do
-  collection do
-    patch :update_email
-  end
-end
+resource :user, only: [:update]
 
 Sidekiq::Web.use Rack::Auth::Basic do |username, password|
   username == ENV.fetch('BASIC_AUTH_USERNAME') && password == ENV.fetch('BASIC_AUTH_PASSWORD')

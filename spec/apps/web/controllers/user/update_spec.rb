@@ -1,6 +1,6 @@
 require_relative '../../../shared/controllers/authentication'
 
-RSpec.describe Web::Controllers::User::UpdateEmail do
+RSpec.describe Web::Controllers::User::Update do
   it_behaves_like 'user authentication'
 
   subject { action.call('rack.session' => { user_id: user.id }, user: { email: email }) }
