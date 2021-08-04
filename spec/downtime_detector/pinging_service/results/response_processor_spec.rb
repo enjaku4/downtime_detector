@@ -18,8 +18,8 @@ describe PingingService::Results::ResponseProcessor do
       expect { subject }.to change { WebAddressRepository.new.find(web_address.id).status }.from('unknown').to('up')
     end
 
-    it 'does not update the last problem' do
-      expect { subject }.not_to change { WebAddressRepository.new.find(web_address.id).last_problem }.from(nil)
+    it 'updates the message' do
+      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).message }.from(nil).to(response.reason_phrase)
     end
   end
 
@@ -36,8 +36,8 @@ describe PingingService::Results::ResponseProcessor do
       expect { subject }.to change { WebAddressRepository.new.find(web_address.id).status }.from('unknown').to('up')
     end
 
-    it 'does not update the last problem' do
-      expect { subject }.not_to change { WebAddressRepository.new.find(web_address.id).last_problem }.from(nil)
+    it 'updates the message' do
+      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).message }.from(nil).to(response.reason_phrase)
     end
   end
 
@@ -54,8 +54,8 @@ describe PingingService::Results::ResponseProcessor do
       expect { subject }.to change { WebAddressRepository.new.find(web_address.id).status }.from('unknown').to('up')
     end
 
-    it 'does not update the last problem' do
-      expect { subject }.not_to change { WebAddressRepository.new.find(web_address.id).last_problem }.from(nil)
+    it 'updates the message' do
+      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).message }.from(nil).to(response.reason_phrase)
     end
   end
 
@@ -72,9 +72,8 @@ describe PingingService::Results::ResponseProcessor do
       expect { subject }.to change { WebAddressRepository.new.find(web_address.id).status }.from('unknown').to('down')
     end
 
-    it 'updates the last problem' do
-      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).last_problem }
-        .from(nil).to(response.reason_phrase)
+    it 'updates the message' do
+      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).message }.from(nil).to(response.reason_phrase)
     end
   end
 
@@ -91,9 +90,8 @@ describe PingingService::Results::ResponseProcessor do
       expect { subject }.to change { WebAddressRepository.new.find(web_address.id).status }.from('unknown').to('down')
     end
 
-    it 'updates the last problem' do
-      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).last_problem }
-        .from(nil).to(response.reason_phrase)
+    it 'updates the message' do
+      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).message }.from(nil).to(response.reason_phrase)
     end
   end
 end
