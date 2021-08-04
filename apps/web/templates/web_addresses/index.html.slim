@@ -18,13 +18,13 @@
                 td = web_address.url
                 td = web_address.pinged_at
                 td = web_address.http_status_code
-                td = web_address.status
+                td
+                  => web_address.status
+                  - if Hanami::Utils::Blank.filled?(web_address.message)
+                    sup.text-primary data-toggle='tooltip' title="#{web_address.message}" ?
                 td
                   = form_for :web_address, routes.web_address_path(web_address.id), method: :delete do
                     = submit 'delete', class: 'btn btn-link text-danger pt-0 pb-1'
-              - if web_address.faulty?
-                tr
-                  td colspan='5' = web_address.last_problem
 
     - else
       p You have no web addresses added.

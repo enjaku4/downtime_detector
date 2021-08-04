@@ -7,21 +7,16 @@ module PingingService
           @response = args[:response]
         end
 
-        def update_web_address_status
-          WebAddressRepository.new
-            .update(@web_address.id, http_status_code: http_status_code, status: resolve_web_address_status)
-        end
-
-        def update_last_problem
-          WebAddressRepository.new.update(@web_address.id, last_problem: @response.reason_phrase)
-        end
-
-        def resolve_web_address_status
+        def status
           (100...400).include?(http_status_code) ? 'up' : 'down'
         end
 
         def http_status_code
           @response.status
+        end
+
+        def message
+          @response.reason_phrase
         end
     end
   end

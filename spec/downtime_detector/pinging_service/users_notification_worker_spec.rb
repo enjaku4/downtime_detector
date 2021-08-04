@@ -2,7 +2,7 @@ RSpec.describe PingingService::UsersNotificationWorker do
   subject { described_class.new.perform(web_address.id) }
 
   let(:web_address) { Fabricate(:web_address) }
-  let(:user_with_email) { Fabricate(:user, email: Faker::Internet.email, last_problem: Faker::Lorem.sentence) }
+  let(:user_with_email) { Fabricate(:user, email: Faker::Internet.email, message: Faker::Lorem.sentence) }
   let(:user_without_email) { Fabricate(:user) }
 
   before do
@@ -10,7 +10,7 @@ RSpec.describe PingingService::UsersNotificationWorker do
     UserHavingWebAddressRepository.new.create(user_id: user_without_email.id, web_address_id: web_address.id)
 
     allow(Mailers::UserNotification).to receive(:deliver_async)
-      .with(email: user_with_email.email, url: web_address.url, problem: web_address.last_problem)
+      .with(email: user_with_email.email, url: web_address.url, problem: web_address.message)
   end
 
   it 'sends exactly one notification email' do

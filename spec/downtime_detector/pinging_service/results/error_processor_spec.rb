@@ -16,8 +16,7 @@ describe PingingService::Results::ErrorProcessor do
     expect { subject }.to change { WebAddressRepository.new.find(web_address.id).status }.from('up').to('error')
   end
 
-  it 'updates the last problem' do
-    expect { subject }.to change { WebAddressRepository.new.find(web_address.id).last_problem }
-      .from(nil).to(exception.message)
+  it 'updates the message' do
+    expect { subject }.to change { WebAddressRepository.new.find(web_address.id).message }.from(nil).to(exception.message)
   end
 end

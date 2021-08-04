@@ -7,17 +7,10 @@ module PingingService
       end
 
       def call
-        update_web_address_status
-        update_pinged_at
-
+        update_web_address_pinging_data
         reload_web_address
 
-        if @web_address.status == 'up'
-          reset_notifications
-        elsif @web_address.faulty?
-          update_last_problem
-          notify_users
-        end
+        @web_address.status == 'up' ? reset_notifications : notify_users
       end
 
       private
@@ -26,24 +19,34 @@ module PingingService
           raise NotImplementedError
         end
 
-        def update_web_address_status
-          raise NotImplementedError
-        end
-
-        def update_pinged_at
-          WebAddressRepository.new.update(@web_address.id, pinged_at: Time.now)
+        def update_web_address_pinging_data
+          WebAddressRepository.new.update(
+            @web_address.id,
+            status: status,
+            http_status_code: http_status_code,
+            message: message,
+            pinged_at: Time.now
+          )
         end
 
         def reload_web_address
           @web_address = WebAddressRepository.new.find(@web_address.id)
         end
 
-        def reset_notifications
-          WebAddressRepository.new.update(@web_address.id, notifications_sent: false)
+        def status
+          raise NotImplementedError
         end
 
-        def update_last_problem
+        def http_status_code
           raise NotImplementedError
+        end
+
+        def message
+          raise NotImplementedError
+        end
+
+        def reset_notifications
+          WebAddressRepository.new.update(@web_address.id, notifications_sent: false)
         end
 
         def notify_users
