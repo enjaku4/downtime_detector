@@ -7,7 +7,7 @@ services:
     image: downtime_detector
     volumes:
       - .:/usr/src/downtime_detector
-      - bundle_cache:/usr/local/bundle
+      - gems:/usr/local/bundle
     depends_on:
       - db
     ports:
@@ -20,25 +20,27 @@ services:
     image: downtime_detector
     volumes:
       - .:/usr/src/downtime_detector
-      - bundle_cache:/usr/local/bundle
+      - gems:/usr/local/bundle
     depends_on:
       - db
       - redis
+    stdin_open: true
+    tty: true
     command: bash -c 'wait-for-it web:2300 --timeout=0 && bundle exec guard -n f -i -G .sidekiq.guardfile'
 
   db:
     image: postgres:13.3
     volumes:
-      - ./tmp/db:/var/lib/postgresql/data
+      - pg:/var/lib/postgresql/data
     environment:
       - 'POSTGRES_HOST_AUTH_METHOD=trust'
-    ports:
-      - '5432:5432'
 
   redis:
     image: redis:6.2
     volumes:
-      - ./tmp/redis:/data
+      - redis:/data
 
 volumes:
-  bundle_cache:
+  gems:
+  pg:
+  redis:
