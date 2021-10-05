@@ -37,6 +37,7 @@ Hanami.configure do
 
     prepare do
       extend Mailers::Async
+      include Mailers::DefaultSender
     end
   end
 

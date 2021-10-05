@@ -3,95 +3,61 @@ require_relative 'base_processor'
 describe PingingService::Results::ResponseProcessor do
   subject { described_class.new(web_address, response: response).call }
 
-  let(:web_address) { Fabricate(:web_address, http_status_code: nil, status: 'unknown') }
+  let(:web_address) { Fabricate(:web_address, status: status) }
 
-  context 'if the http status code is 100' do
-    let(:response) { Faraday::Response.new(status: 100, reason_phrase: 'continue') }
+  [100, 200, 300].each do |status_code|
+    context "if the http status code is #{status_code}" do
+      let(:response) { Faraday::Response.new(status: status_code, reason_phrase: 'foo') }
 
-    it_behaves_like "the processing of the web address pinging result with \'up\' status"
+      context "if the web address\'s status was faulty" do
+        let(:status) { 'error' }
 
-    it 'changes the http_status_code attribute to 100' do
-      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).http_status_code }.from(nil).to(100)
-    end
+        it_behaves_like 'pinging result processor', status_code, 'up', 'foo'
 
-    it 'changes the status attribute to :up' do
-      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).status }.from('unknown').to('up')
-    end
+        it 'sends notifications' do
+          expect(PingingService::UsersNotificationWorker).to receive(:perform_async).with(web_address.id)
+          subject
+        end
+      end
 
-    it 'updates the message' do
-      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).message }.from(nil).to(response.reason_phrase)
-    end
-  end
+      context 'if the web address\'s status was not faulty' do
+        let(:status) { 'unknown' }
 
-  context 'if the http status code is 200' do
-    let(:response) { Faraday::Response.new(status: 200, reason_phrase: 'ok') }
+        it_behaves_like 'pinging result processor', status_code, 'up', 'foo'
 
-    it_behaves_like "the processing of the web address pinging result with \'up\' status"
-
-    it 'changes the http_status_code attribute to 200' do
-      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).http_status_code }.from(nil).to(200)
-    end
-
-    it 'changes the status attribute to :up' do
-      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).status }.from('unknown').to('up')
-    end
-
-    it 'updates the message' do
-      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).message }.from(nil).to(response.reason_phrase)
+        it 'does not send any notifications' do
+          expect(PingingService::UsersNotificationWorker).not_to receive(:perform_async)
+          subject
+        end
+      end
     end
   end
 
-  context 'if the http status code is 300' do
-    let(:response) { Faraday::Response.new(status: 300, reason_phrase: 'multiple choices') }
+  [400, 500].each do |status_code|
+    context "if the http status code is #{status_code}" do
+      let(:response) { Faraday::Response.new(status: status_code, reason_phrase: 'foo') }
 
-    it_behaves_like "the processing of the web address pinging result with \'up\' status"
+      context "if the web address\'s status was faulty" do
+        let(:status) { 'error' }
 
-    it 'changes the http_status_code attribute to 300' do
-      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).http_status_code }.from(nil).to(300)
-    end
+        it_behaves_like 'pinging result processor', status_code, 'down', 'foo'
 
-    it 'changes the status attribute to :up' do
-      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).status }.from('unknown').to('up')
-    end
+        it 'does not send any notifications' do
+          expect(PingingService::UsersNotificationWorker).not_to receive(:perform_async)
+          subject
+        end
+      end
 
-    it 'updates the message' do
-      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).message }.from(nil).to(response.reason_phrase)
-    end
-  end
+      context 'if the web address\'s status was not faulty' do
+        let(:status) { 'unknown' }
 
-  context 'if the http status code is 400' do
-    let(:response) { Faraday::Response.new(status: 400, reason_phrase: 'bad request') }
+        it_behaves_like 'pinging result processor', status_code, 'down', 'foo'
 
-    it_behaves_like "the processing of the web address pinging result with \'faulty\' status"
-
-    it 'changes the http_status_code attribute to 400' do
-      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).http_status_code }.from(nil).to(400)
-    end
-
-    it 'changes the status attribute to :down' do
-      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).status }.from('unknown').to('down')
-    end
-
-    it 'updates the message' do
-      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).message }.from(nil).to(response.reason_phrase)
-    end
-  end
-
-  context 'if the http status code is 500' do
-    let(:response) { Faraday::Response.new(status: 500, reason_phrase: 'internal server error') }
-
-    it_behaves_like "the processing of the web address pinging result with \'faulty\' status"
-
-    it 'changes the http_status_code attribute to 500' do
-      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).http_status_code }.from(nil).to(500)
-    end
-
-    it 'changes the status attribute to :down' do
-      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).status }.from('unknown').to('down')
-    end
-
-    it 'updates the message' do
-      expect { subject }.to change { WebAddressRepository.new.find(web_address.id).message }.from(nil).to(response.reason_phrase)
+        it 'sends notifications' do
+          expect(PingingService::UsersNotificationWorker).to receive(:perform_async).with(web_address.id)
+          subject
+        end
+      end
     end
   end
 end
