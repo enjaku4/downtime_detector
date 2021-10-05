@@ -7,8 +7,15 @@ module PingingService
 
       web_address.users.each do |user|
         next if Hanami::Utils::Blank.blank?(user.email)
-        Mailers::UserNotification.deliver_async(email: user.email, url: web_address.url, problem: web_address.message)
+
+        mailer_class(web_address).deliver_async(email: user.email, web_address_id: web_address.id)
       end
     end
+
+    private
+
+      def mailer_class(web_address)
+        web_address.faulty? ? Mailers::ProblemNotification : Mailers::ProblemSolvedNotification
+      end
   end
 end
