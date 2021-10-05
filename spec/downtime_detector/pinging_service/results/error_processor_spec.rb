@@ -3,20 +3,28 @@ require_relative 'base_processor'
 describe PingingService::Results::ErrorProcessor do
   subject { described_class.new(web_address, exception: exception).call }
 
-  let(:web_address) { Fabricate(:web_address, http_status_code: 200, status: 'up') }
+  let(:web_address) { Fabricate(:web_address, http_status_code: 200, status: status) }
   let(:exception) { Faraday::TimeoutError.new }
 
-  it_behaves_like "the processing of the web address pinging result with \'faulty\' status"
+  context "if the web address\'s status was faulty" do
+    let(:status) { 'down' }
 
-  it 'changes the http_status_code attribute to nil' do
-    expect { subject }.to change { WebAddressRepository.new.find(web_address.id).http_status_code }.from(200).to(nil)
+    it_behaves_like 'pinging result processor', nil, 'error', 'timeout'
+
+    it 'does not send any notifications' do
+      expect(PingingService::UsersNotificationWorker).not_to receive(:perform_async)
+      subject
+    end
   end
 
-  it 'changes the status attribute to :error' do
-    expect { subject }.to change { WebAddressRepository.new.find(web_address.id).status }.from('up').to('error')
-  end
+  context 'if the web address\'s status was not faulty' do
+    let(:status) { 'unknown' }
 
-  it 'updates the message' do
-    expect { subject }.to change { WebAddressRepository.new.find(web_address.id).message }.from(nil).to(exception.message)
+    it_behaves_like 'pinging result processor', nil, 'error', 'timeout'
+
+    it 'sends notifications' do
+      expect(PingingService::UsersNotificationWorker).to receive(:perform_async).with(web_address.id)
+      subject
+    end
   end
 end
