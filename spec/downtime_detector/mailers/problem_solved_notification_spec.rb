@@ -14,6 +14,7 @@ RSpec.describe Mailers::ProblemSolvedNotification do
     mail = Hanami::Mailer.deliveries.last
 
     expect(mail.to).to contain_exactly(email)
+    expect(mail.subject).to eq('Problem solved')
     expect(mail.body.encoded).to include("Problem solved, #{url} is up again.")
   end
 end

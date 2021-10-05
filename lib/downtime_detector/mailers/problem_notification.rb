@@ -2,7 +2,6 @@ module Mailers
   class ProblemNotification
     include Hanami::Mailer
 
-    to      :email
     subject 'A problem occured'
 
     private

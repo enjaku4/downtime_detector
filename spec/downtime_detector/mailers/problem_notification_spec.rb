@@ -15,6 +15,7 @@ RSpec.describe Mailers::ProblemNotification do
     mail = Hanami::Mailer.deliveries.last
 
     expect(mail.to).to contain_exactly(email)
+    expect(mail.subject).to eq('A problem occured')
     expect(mail.body.encoded).to include("A problem &laquo;#{message}&raquo; occured on #{url}.")
   end
 end
