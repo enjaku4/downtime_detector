@@ -304,7 +304,7 @@ DEPENDENCIES
   slim
 
 RUBY VERSION
-   ruby 2.6.7p197
+   ruby 2.6.8p205
 
 BUNDLED WITH
    1.17.2
