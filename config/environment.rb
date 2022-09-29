@@ -52,7 +52,7 @@ Hanami.configure do
     mailer do
       delivery :smtp, address: ENV.fetch('MAILGUN_SMTP_SERVER'), port: ENV.fetch('MAILGUN_SMTP_PORT'),
         user_name: ENV.fetch('MAILGUN_SMTP_LOGIN'), password: ENV.fetch('MAILGUN_SMTP_PASSWORD'),
-        domain: 'downtimedetector.xyz', authentication: :plain
+        domain: 'downtime-detector.herokuapp.com', authentication: :plain
     end
   end
 end

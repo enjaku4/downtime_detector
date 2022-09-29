@@ -2,7 +2,7 @@ module Mailers
   module  DefaultSender
     def self.included(mailer)
       mailer.class_eval do
-        from 'info@downtimedetector.xyz'
+        from 'info@downtime-detector.herokuapp.com'
         to :email
       end
     end
